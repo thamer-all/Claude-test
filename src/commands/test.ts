@@ -18,6 +18,8 @@ import {
 } from '../core/promptRunner.js';
 import { runDatasetTests } from '../core/datasetRunner.js';
 import { setLogLevel } from '../utils/logger.js';
+import { saveTestRun } from '../core/testHistory.js';
+import { shortHash } from '../utils/hashing.js';
 
 export function registerTestCommand(program: Command): void {
   program
@@ -200,6 +202,26 @@ export function registerTestCommand(program: Command): void {
 
         if (summary.failed > 0) {
           process.exitCode = 1;
+        }
+
+        // Save to history (non-JSON, non-dataset runs only)
+        try {
+          await saveTestRun({
+            id: shortHash(Date.now().toString()),
+            timestamp: new Date().toISOString(),
+            specFile: targetPath,
+            totalTests: summary.totalTests,
+            passed: summary.passed,
+            failed: summary.failed,
+            duration: summary.duration,
+            results: results.map((r) => ({
+              testName: r.testName,
+              passed: r.passed,
+              duration: r.duration,
+            })),
+          });
+        } catch {
+          // Don't fail the command if history save fails
         }
       }
 
