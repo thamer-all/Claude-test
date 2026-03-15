@@ -73,11 +73,12 @@ export function registerHeatmapCommand(program: Command): void {
     .description('Token heatmap — show largest files by estimated token count')
     .option('--json', 'Output heatmap as JSON')
     .option('--top <n>', 'Number of top files to show', '30')
+    .option('--output <file>', 'Write JSON results to a file')
     .action(async (
       pathArg: string | undefined,
-      options: { json?: boolean; top: string },
+      options: { json?: boolean; top: string; output?: string },
     ) => {
-      if (options.json) {
+      if (options.json || options.output) {
         setLogLevel('silent');
       }
 
@@ -94,6 +95,13 @@ export function registerHeatmapCommand(program: Command): void {
       }
 
       const { entries, totalTokens } = await buildHeatmap(targetPath, topN);
+
+      if (options.output) {
+        const { writeFile } = await import('node:fs/promises');
+        await writeFile(resolvePath(options.output), JSON.stringify({ totalTokens, entries }, null, 2));
+        console.log(`Results written to ${options.output}`);
+        return;
+      }
 
       if (options.json) {
         console.log(JSON.stringify({ totalTokens, entries }, null, 2));

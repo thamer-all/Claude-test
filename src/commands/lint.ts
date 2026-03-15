@@ -197,11 +197,12 @@ export function registerLintCommand(program: Command): void {
     .description('Lint prompt spec files for common issues and best practices')
     .option('--json', 'Output warnings as JSON')
     .option('--fix', 'Show fix suggestions (future)')
+    .option('--output <file>', 'Write JSON results to a file')
     .action(async (
       pathArg: string | undefined,
-      options: { json?: boolean; fix?: boolean },
+      options: { json?: boolean; fix?: boolean; output?: string },
     ) => {
-      if (options.json) {
+      if (options.json || options.output) {
         setLogLevel('silent');
       }
 
@@ -209,6 +210,13 @@ export function registerLintCommand(program: Command): void {
       const targetPath = resolvePath(pathArg ?? 'prompts');
 
       const warnings = await promptLinter(targetPath);
+
+      if (options.output) {
+        const { writeFile } = await import('node:fs/promises');
+        await writeFile(resolvePath(options.output), JSON.stringify(warnings, null, 2));
+        console.log(`Results written to ${options.output}`);
+        return;
+      }
 
       if (options.json) {
         console.log(JSON.stringify(warnings, null, 2));

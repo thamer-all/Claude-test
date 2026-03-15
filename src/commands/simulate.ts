@@ -99,11 +99,12 @@ export function registerSimulateCommand(program: Command): void {
     .option('--json', 'Output simulation as JSON')
     .option('--target <target>', 'Target context window: 200k or 1m')
     .option('--model <model>', 'Simulate against a specific model\'s context window')
+    .option('--output <file>', 'Write JSON results to a file')
     .action(async (
       pathArg: string | undefined,
-      options: { json?: boolean; target?: string; model?: string },
+      options: { json?: boolean; target?: string; model?: string; output?: string },
     ) => {
-      if (options.json) {
+      if (options.json || options.output) {
         setLogLevel('silent');
       }
 
@@ -133,6 +134,13 @@ export function registerSimulateCommand(program: Command): void {
       }
 
       const result = await repositorySimulator(targetPath, options.target, customTargets);
+
+      if (options.output) {
+        const { writeFile } = await import('node:fs/promises');
+        await writeFile(resolvePath(options.output), JSON.stringify(result, null, 2));
+        console.log(`Results written to ${options.output}`);
+        return;
+      }
 
       if (options.json) {
         console.log(JSON.stringify(result, null, 2));

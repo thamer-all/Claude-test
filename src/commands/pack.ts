@@ -157,11 +157,12 @@ export function registerPackCommand(program: Command): void {
     .option('--target <target>', 'Target context window: 200k or 1m', '1m')
     .option('--model <model>', 'Use a specific model\'s context window as the target')
     .option('--optimize', 'Show optimization suggestions')
+    .option('--output <file>', 'Write JSON results to a file')
     .action(async (
       pathArg: string | undefined,
-      options: { json?: boolean; target: string; model?: string; optimize?: boolean },
+      options: { json?: boolean; target: string; model?: string; optimize?: boolean; output?: string },
     ) => {
-      if (options.json) {
+      if (options.json || options.output) {
         setLogLevel('silent');
       }
 
@@ -191,6 +192,13 @@ export function registerPackCommand(program: Command): void {
       }
 
       const plan = await contextPacker(targetPath, targetLabel, overrideTargetSize);
+
+      if (options.output) {
+        const { writeFile } = await import('node:fs/promises');
+        await writeFile(resolvePath(options.output), JSON.stringify(plan, null, 2));
+        console.log(`Results written to ${options.output}`);
+        return;
+      }
 
       if (options.json) {
         console.log(JSON.stringify(plan, null, 2));

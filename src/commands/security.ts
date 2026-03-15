@@ -169,11 +169,12 @@ export function registerSecurityCommand(program: Command): void {
     .command('security [path]')
     .description('Security checks — detect injection patterns, leaked secrets, unsafe configs')
     .option('--json', 'Output findings as JSON')
+    .option('--output <file>', 'Write JSON results to a file')
     .action(async (
       pathArg: string | undefined,
-      options: { json?: boolean },
+      options: { json?: boolean; output?: string },
     ) => {
-      if (options.json) {
+      if (options.json || options.output) {
         setLogLevel('silent');
       }
 
@@ -181,6 +182,13 @@ export function registerSecurityCommand(program: Command): void {
       const targetPath = resolvePath(pathArg ?? 'prompts');
 
       const findings = await securityScanner(targetPath);
+
+      if (options.output) {
+        const { writeFile } = await import('node:fs/promises');
+        await writeFile(resolvePath(options.output), JSON.stringify(findings, null, 2));
+        console.log(`Results written to ${options.output}`);
+        return;
+      }
 
       if (options.json) {
         console.log(JSON.stringify(findings, null, 2));

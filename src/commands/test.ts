@@ -207,15 +207,24 @@ export function registerTestCommand(program: Command): void {
 
       if (options.watch) {
         const chokidar = await import('chokidar');
-        console.log(chalk.dim(`\nWatching for changes in ${targetPath}...`));
+        console.log(chalk.dim(`\nWatching for changes in ${targetPath} (*.yaml, *.yml, *.txt)...`));
+        console.log(chalk.dim('Press Ctrl+C to stop.\n'));
 
         const watcher = chokidar.watch(targetPath, {
           ignoreInitial: true,
           awaitWriteFinish: { stabilityThreshold: 300 },
+          ignored: (filePath: string) => {
+            // Allow directories through so chokidar can recurse
+            if (!filePath.includes('.')) return false;
+            return !/\.(ya?ml|txt)$/.test(filePath);
+          },
         });
 
-        watcher.on('change', async (changedPath: string) => {
-          console.log(chalk.dim(`\nFile changed: ${changedPath}`));
+        let running = false;
+        const rerun = async (changedPath: string, event: string): Promise<void> => {
+          if (running) return;
+          running = true;
+          console.log(chalk.dim(`\nFile ${event}: ${changedPath}`));
           console.log(chalk.dim('Re-running tests...\n'));
           try {
             await runTests();
@@ -223,7 +232,11 @@ export function registerTestCommand(program: Command): void {
             const message = err instanceof Error ? err.message : String(err);
             console.error(chalk.red(`Error: ${message}`));
           }
-        });
+          running = false;
+        };
+
+        watcher.on('change', (p: string) => rerun(p, 'changed'));
+        watcher.on('add', (p: string) => rerun(p, 'added'));
 
         await new Promise<never>(() => {
           // Watch mode runs until interrupted
