@@ -150,7 +150,7 @@ async function checkDiskSpace(): Promise<DiagnosticCheck> {
 /**
  * Run all diagnostic checks.
  */
-async function doctorRunner(): Promise<DiagnosticCheck[]> {
+export async function doctorRunner(): Promise<DiagnosticCheck[]> {
   const checks = await Promise.all([
     checkNodeVersion(),
     checkNpmInstalled(),

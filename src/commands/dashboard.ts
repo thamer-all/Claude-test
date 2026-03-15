@@ -12,7 +12,8 @@ import { stat } from 'node:fs/promises';
 import { setLogLevel } from '../utils/logger.js';
 import { analyzeContext } from '../core/contextAnalyzer.js';
 import { scanForClaudeAssets } from '../core/agentTracer.js';
-import { runDiagnostics } from '../core/doctorRunner.js';
+import { doctorRunner } from './doctor.js';
+import { analyzeWorkflow } from './workflow.js';
 import { formatTokens, formatBytes } from '../utils/output.js';
 import type { ContextAnalysis } from '../types/context.js';
 import type { DiagnosticCheck } from '../types/diagnostics.js';
@@ -165,7 +166,9 @@ function renderOverview(
 
   const passCount = doctorChecks.filter((c) => c.status === 'pass').length;
   const totalChecks = doctorChecks.length;
-  const doctorIcon = passCount === totalChecks ? chalk.green('\u2713') : chalk.yellow('!');
+  const hasFail = doctorChecks.some((c) => c.status === 'fail');
+  const hasWarn = doctorChecks.some((c) => c.status === 'warn');
+  const doctorIcon = hasFail ? chalk.red('\u2717') : hasWarn ? chalk.yellow('!') : chalk.green('\u2713');
 
   const filesStr = `Files: ${analysis.totalFiles}`;
   const tokensStr = `Tokens: ${formatTokens(analysis.estimatedTokens)}`;
@@ -415,75 +418,6 @@ function renderAITools(
   return lines;
 }
 
-// ---------------------------------------------------------------------------
-// Workflow analysis (inline, lightweight version)
-// ---------------------------------------------------------------------------
-
-interface WorkflowSummary {
-  score: number;
-  maxScore: number;
-}
-
-async function quickWorkflowScore(rootPath: string): Promise<WorkflowSummary> {
-  const { access: fsAccess } = await import('node:fs/promises');
-  let score = 0;
-  const maxScore = 5;
-
-  // 1. Task tracking
-  const taskFiles = ['tasks/todo.md', 'TODO.md', 'todo.md'];
-  for (const f of taskFiles) {
-    try {
-      await fsAccess(resolve(rootPath, f));
-      score++;
-      break;
-    } catch { /* not found */ }
-  }
-
-  // 2. Lessons
-  const lessonFiles = ['tasks/lessons.md', 'LESSONS.md', 'lessons.md'];
-  for (const f of lessonFiles) {
-    try {
-      await fsAccess(resolve(rootPath, f));
-      score++;
-      break;
-    } catch { /* not found */ }
-  }
-
-  // 3. Plans
-  const planFiles = ['PLAN.md', 'plan.md', 'plans'];
-  for (const f of planFiles) {
-    try {
-      await fsAccess(resolve(rootPath, f));
-      score++;
-      break;
-    } catch { /* not found */ }
-  }
-
-  // 4. AI config (checked via assets)
-  const aiConfigFiles = [
-    'CLAUDE.md', '.cursorrules', '.windsurfrules',
-    '.aider.conf.yml', '.github/copilot-instructions.md',
-  ];
-  for (const f of aiConfigFiles) {
-    try {
-      await fsAccess(resolve(rootPath, f));
-      score++;
-      break;
-    } catch { /* not found */ }
-  }
-
-  // 5. CI integration
-  const ciFiles = ['.github/workflows', '.gitlab-ci.yml', 'Jenkinsfile'];
-  for (const f of ciFiles) {
-    try {
-      await fsAccess(resolve(rootPath, f));
-      score++;
-      break;
-    } catch { /* not found */ }
-  }
-
-  return { score, maxScore };
-}
 
 // ---------------------------------------------------------------------------
 // Dashboard JSON output type
@@ -563,8 +497,8 @@ export function registerDashboardCommand(program: Command): void {
       const [analysis, assets, doctorChecks, workflow] = await Promise.all([
         analyzeContext(targetPath),
         scanForClaudeAssets(targetPath),
-        runDiagnostics(),
-        quickWorkflowScore(targetPath),
+        doctorRunner(),
+        analyzeWorkflow(targetPath),
       ]);
 
       // Count unique AI tool types

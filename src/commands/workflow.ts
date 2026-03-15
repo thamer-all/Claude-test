@@ -256,7 +256,7 @@ function computeScore(report: WorkflowReport): { score: number; detected: string
   return { score, detected, missing };
 }
 
-async function analyzeWorkflow(rootPath: string): Promise<WorkflowReport> {
+export async function analyzeWorkflow(rootPath: string): Promise<WorkflowReport> {
   const [tasks, lessons, plans, aiTools] = await Promise.all([
     detectTasks(rootPath),
     detectLessons(rootPath),

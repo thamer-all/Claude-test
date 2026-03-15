@@ -10,7 +10,7 @@ import type { MCPAsset } from '../types/agent.js';
 
 const DEFAULT_IGNORE_DIRS = new Set([
   'node_modules', '.git', 'dist', 'build', 'coverage',
-  '.cache', '.turbo',
+  '.cache', '.turbo', 'src',
 ]);
 
 /** Patterns for detecting MCP-related files. */

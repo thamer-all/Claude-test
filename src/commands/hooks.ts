@@ -14,7 +14,7 @@ import type { HookInfo } from '../types/agent.js';
 
 const DEFAULT_IGNORE_DIRS = new Set([
   'node_modules', 'dist', 'build', 'coverage',
-  '.cache', '.turbo',
+  '.cache', '.turbo', 'src',
 ]);
 
 /** Patterns for detecting hooks. */

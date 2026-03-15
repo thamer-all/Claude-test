@@ -15,7 +15,7 @@ const SKIP_DIRS: Set<string> = new Set([
   'node_modules', '.git', 'dist', 'build', 'coverage',
   '__pycache__', '.next', '.nuxt', '.cache', '.turbo',
   '.parcel-cache', '.vscode', '.idea', 'vendor', 'tmp',
-  '.tmp', '.terraform',
+  '.tmp', '.terraform', 'src',
 ]);
 
 /**
