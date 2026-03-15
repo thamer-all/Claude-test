@@ -39,6 +39,13 @@ interface CategorizedFile extends FileTokenInfo {
 // File categorization heuristics
 // ---------------------------------------------------------------------------
 
+/** Lock / dependency-resolution files — excluded from pack plans. */
+const EXCLUDED_FILENAMES = new Set([
+  'package-lock.json', 'yarn.lock', 'pnpm-lock.yaml', 'bun.lockb',
+  'composer.lock', 'gemfile.lock', 'poetry.lock', 'cargo.lock',
+  'go.sum', 'flake.lock', 'packages.lock.json', 'shrinkwrap.json',
+]);
+
 /** Extensions that indicate core source code. */
 const CORE_SOURCE_EXTENSIONS = new Set([
   '.ts', '.js', '.py', '.go', '.rs', '.java', '.rb',
@@ -374,6 +381,9 @@ export async function packContext(
   const categorizedFiles: CategorizedFile[] = [];
 
   for (const entry of fileEntries) {
+    // Skip lock / dependency-resolution files
+    if (EXCLUDED_FILENAMES.has(basename(entry.path).toLowerCase())) continue;
+
     // Skip binary extensions
     const binaryExts = new Set([
       '.png', '.jpg', '.jpeg', '.gif', '.ico', '.woff', '.woff2',

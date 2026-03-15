@@ -10,6 +10,7 @@ import { Command } from 'commander';
 import { resolvePath } from '../utils/paths.js';
 import { walkDirectory, getRelativePath } from '../utils/fs.js';
 import { estimateTokens } from '../tokenizers/claudeTokenizer.js';
+import { basename } from 'node:path';
 import { readFile, stat } from 'node:fs/promises';
 import { formatTokens, formatTable, formatPercentage } from '../utils/output.js';
 import { loadConfig } from '../utils/config.js';
@@ -21,6 +22,13 @@ const DEFAULT_IGNORE_DIRS = new Set([
   'node_modules', '.git', 'dist', 'build', 'coverage',
   '.next', '.nuxt', '__pycache__', '.venv', 'vendor',
   '.cache', '.turbo',
+]);
+
+/** Lock / dependency-resolution files — excluded from pack plans. */
+const EXCLUDED_FILENAMES = new Set([
+  'package-lock.json', 'yarn.lock', 'pnpm-lock.yaml', 'bun.lockb',
+  'composer.lock', 'gemfile.lock', 'poetry.lock', 'cargo.lock',
+  'go.sum', 'flake.lock', 'packages.lock.json', 'shrinkwrap.json',
 ]);
 
 const TARGET_SIZES: Record<string, number> = {
@@ -78,6 +86,9 @@ async function contextPacker(
   const allFiles: FileTokenInfo[] = [];
 
   for (const entry of fileEntries) {
+    // Skip lock / dependency-resolution files
+    if (EXCLUDED_FILENAMES.has(basename(entry.path).toLowerCase())) continue;
+
     try {
       const content = await readFile(entry.path, 'utf-8');
       const tokens = estimateTokens(content);
