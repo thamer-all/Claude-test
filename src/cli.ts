@@ -29,6 +29,7 @@ import { registerInstallHookCommand } from './commands/installHook.js';
 import { registerWorkflowCommand } from './commands/workflow.js';
 import { registerModelsCommand } from './commands/models.js';
 import { registerUiCommand } from './commands/ui.js';
+import { registerDashboardCommand } from './commands/dashboard.js';
 import { handleError } from './utils/errors.js';
 
 const program = new Command();
@@ -72,5 +73,6 @@ registerInstallHookCommand(program);
 registerWorkflowCommand(program);
 registerModelsCommand(program);
 registerUiCommand(program);
+registerDashboardCommand(program);
 
 program.parseAsync(process.argv).catch(handleError);
