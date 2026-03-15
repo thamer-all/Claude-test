@@ -1,0 +1,51 @@
+# prompt-v1.prompt.yaml
+#
+# Original summarization prompt — baseline for A/B comparison.
+# Run: codeprobe ab examples/ab-test/prompt-v1.prompt.yaml examples/ab-test/prompt-v2.prompt.yaml
+
+name: summarize-v1
+description: Basic summarization prompt (original)
+model: claude-sonnet-4-6
+
+system: |
+  You are a helpful assistant. Summarize the text the user provides.
+
+prompt: |
+  Summarize the following text:
+
+  {{input}}
+
+tests:
+  - name: inline-short
+    input: |
+      TypeScript is a typed superset of JavaScript that compiles to plain
+      JavaScript. It adds optional static type checking along with the latest
+      ECMAScript features. TypeScript is developed and maintained by Microsoft.
+    expect:
+      contains:
+        - TypeScript
+      minLength: 20
+      maxLength: 500
+
+  - name: bullet-count
+    input: |
+      Three benefits of exercise: first, it improves cardiovascular health by
+      strengthening the heart and improving circulation. Second, it boosts
+      mental health by releasing endorphins that reduce stress and anxiety.
+      Third, it helps maintain a healthy weight through calorie expenditure.
+    expect:
+      contains:
+        - health
+      minLength: 30
+
+  - name: technical-detail
+    input: |
+      PostgreSQL uses MVCC (Multi-Version Concurrency Control) to handle
+      concurrent access. Each transaction sees a snapshot of the data as it
+      was at the start of the transaction, allowing readers and writers to
+      operate without blocking each other. This is achieved by keeping
+      multiple versions of each row.
+    expect:
+      contains:
+        - concurrency
+      minLength: 20

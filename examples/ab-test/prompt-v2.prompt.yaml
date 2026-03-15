@@ -1,0 +1,25 @@
+# prompt-v2.prompt.yaml
+#
+# Improved summarization prompt — challenger for A/B comparison.
+# Uses a more structured system prompt with explicit constraints.
+# Run: codeprobe ab examples/ab-test/prompt-v1.prompt.yaml examples/ab-test/prompt-v2.prompt.yaml
+
+name: summarize-v2
+description: Improved summarization prompt with structured instructions
+model: claude-sonnet-4-6
+
+system: |
+  You are an expert technical writer. When summarizing text:
+  1. Preserve all key technical terms and proper nouns.
+  2. Keep the summary concise — no more than 2-3 sentences.
+  3. Focus on the core concept and its significance.
+  4. Use clear, direct language.
+
+prompt: |
+  Provide a concise summary of the following text. Retain important
+  technical terms and keep your response to 2-3 sentences.
+
+  Text:
+  {{input}}
+
+  Summary:
