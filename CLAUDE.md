@@ -1,6 +1,6 @@
 # claude-test
 
-DevTools for Claude — Context Engineering Toolkit for Claude Code.
+DevTools for AI Coding — Context Engineering Toolkit for Claude, Cursor, Copilot, and more.
 
 A CLI that helps developers test prompts, analyze context usage, lint prompt specs, scan for security issues, benchmark models, and generate optimized context packs. All commands work offline with deterministic mock responses by default; set `ANTHROPIC_API_KEY` for live Anthropic API calls.
 
@@ -27,17 +27,17 @@ Monolithic CLI built with Commander.js. All source lives in `src/`:
 
 ```
 src/
-  cli.ts              Entrypoint — registers all 21 commands
-  commands/           21 command handlers (one file per command)
+  cli.ts              Entrypoint — registers all 22 commands
+  commands/           22 command handlers (one file per command)
   core/               18 engine modules (analyzers, runners, scanners)
   types/              7 TypeScript type definition files
   utils/              9 shared utilities (logger, fs, cache, output formatting)
   tokenizers/         Claude tokenizer wrapper (tiktoken cl100k_base)
 ```
 
-### Commands (21)
+### Commands (22)
 
-`init` `test` `diff` `context` `simulate` `pack` `benchmark` `agents` `hooks` `mcp` `lint` `improve` `map` `heatmap` `explain` `validate` `security` `doctor` `repl` `generate-claudemd` `install-hook`
+`init` `test` `diff` `context` `simulate` `pack` `benchmark` `agents` `hooks` `mcp` `lint` `improve` `map` `heatmap` `explain` `validate` `security` `doctor` `repl` `generate-claudemd` `install-hook` `workflow`
 
 ### Core engines (18)
 
@@ -57,7 +57,7 @@ src/
 ## Key Design Decisions
 
 - **Mock-first**: All commands work without an API key. Mock mode is the default. Deterministic mock output is hashed from prompt + system + input for stable, reproducible test results.
-- **Anthropic-only**: No multi-provider abstractions. Claude models only (`claude-sonnet-4-6`, `claude-opus-4-6`).
+- **Multi-provider**: Supports Anthropic, OpenAI, Google, DeepSeek, Qwen, Mistral, Meta (via OpenAI-compatible API), and local models (Ollama, vLLM). Provider implementations live in `src/core/providers/`.
 - **Optional live API**: The Anthropic SDK is dynamically imported at runtime, not listed as a dependency. Users install it themselves if they want live calls.
 - **Context engineering focus**: `context`, `simulate`, `pack`, `map`, and `heatmap` are the primary differentiators.
 - **Configuration via YAML**: `claude-test.config.yaml` at project root. Prompt specs are also YAML files in `prompts/`.

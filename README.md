@@ -1,10 +1,8 @@
 # claude-test
 
-**DevTools for Claude — Context Engineering Toolkit for Claude Code**
+**DevTools for AI Coding — Context Engineering Toolkit for Claude, Cursor, Copilot, and more**
 
-`claude-test` is a developer toolkit for testing, analyzing, and optimizing Claude workflows. It helps you write better prompts, understand your repository's context footprint, and build production-grade AI pipelines with Anthropic's Claude.
-
-Built exclusively for the Anthropic / Claude ecosystem.
+`claude-test` is a developer toolkit for testing, analyzing, and optimizing AI coding workflows. It helps you write better prompts, understand your repository's context footprint, and build production-grade AI pipelines with any major LLM provider. Works with Claude Code, Cursor, GitHub Copilot, Windsurf, Aider, and other AI coding tools.
 
 ---
 
@@ -70,6 +68,7 @@ claude-test generate-claudemd
 | `doctor` | Diagnose environment readiness |
 | `repl` | Interactive prompt playground |
 | `generate-claudemd` | Generate a CLAUDE.md from repo analysis |
+| `workflow [path]` | Detect agentic workflow patterns (tasks, plans, lessons) |
 | `install-hook` | Install a Claude Code hook for prompt testing |
 
 ## Prompt Testing
@@ -332,11 +331,40 @@ claude-test benchmark prompts/my-prompt.yaml
 
 See [Claude Code Integration Guide](docs/claude-code-integration.md) for the full setup guide.
 
-## Anthropic-Only Focus
+## AI Tool Detection
 
-`claude-test` is built exclusively for the Anthropic / Claude ecosystem. There are no multi-provider abstractions, no OpenAI compatibility layers, and no generic LLM platform shims. This focus means deeper integration with Claude's capabilities, accurate token estimation, and tooling that understands how Claude actually works.
+claude-test detects configuration files for all major AI coding tools:
 
-Supported models: `claude-sonnet-4-6`, `claude-opus-4-6`
+```bash
+claude-test agents .
+```
+
+Supported tools: Claude Code, Cursor, Windsurf, GitHub Copilot, Aider, Continue.dev, Cline, OpenAI Codex CLI.
+
+### Agentic Workflow Analysis
+
+```bash
+claude-test workflow .
+```
+
+Detects task tracking (todo.md), self-improvement loops (lessons.md), plan files, and AI tool configurations.
+
+## Multi-Provider Support
+
+claude-test supports models from all major AI providers:
+
+| Provider | Models | API Key |
+|----------|--------|---------|
+| Anthropic | Claude Opus 4.6, Sonnet 4.6, Haiku 4.5 | `ANTHROPIC_API_KEY` |
+| OpenAI | GPT-4.1, GPT-4o, o3, o4-mini | `OPENAI_API_KEY` |
+| Google | Gemini 2.5 Pro, Gemini 2.5 Flash | `GOOGLE_API_KEY` |
+| DeepSeek | DeepSeek V3, DeepSeek R1 | `DEEPSEEK_API_KEY` |
+| Qwen | Qwen 3 235B, Qwen 3 32B | `DASHSCOPE_API_KEY` |
+| Mistral | Codestral, Mistral Large | `MISTRAL_API_KEY` |
+| Meta | Llama 4 Maverick, Llama 4 Scout | Via OpenAI-compatible API |
+| Local | Ollama, vLLM | No key needed |
+
+Context engineering features (context, simulate, pack, map, heatmap) work offline without any API key.
 
 ## Examples
 
