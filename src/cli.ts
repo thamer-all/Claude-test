@@ -45,6 +45,10 @@ import { registerSummaryCommand } from './commands/summary.js';
 import { registerExportCommand } from './commands/export.js';
 import { registerServeCommand } from './commands/serve.js';
 import { registerQualityCommand } from './commands/quality.js';
+import { registerGuardCommand } from './commands/guard.js';
+import { registerVerifyCommand } from './commands/verify.js';
+import { registerImpactCommand } from './commands/impact.js';
+import { registerContractsCommand } from './commands/contracts.js';
 import { handleError } from './utils/errors.js';
 
 const program = new Command();
@@ -57,13 +61,15 @@ program
 Examples:
   $ codeprobe                          Dashboard (default)
   $ codeprobe scan                     Full project analysis
+  $ codeprobe guard                    Snapshot health before AI coding
+  $ codeprobe verify                   Check nothing broke after AI changes
+  $ codeprobe impact src/index.ts      Show blast radius of a file
+  $ codeprobe contracts                Extract type/API contracts
   $ codeprobe test                     Run prompt tests
   $ codeprobe context .                Analyze token usage
-  $ codeprobe cost .                   Estimate API costs
-  $ codeprobe generate-rules           Generate AI tool configs
 
 Quick start:
-  $ codeprobe init && codeprobe scan
+  $ codeprobe guard && ai-code && codeprobe verify
 `);
 
 registerInitCommand(program);
@@ -106,6 +112,10 @@ registerSummaryCommand(program);
 registerExportCommand(program);
 registerServeCommand(program);
 registerQualityCommand(program);
+registerGuardCommand(program);
+registerVerifyCommand(program);
+registerImpactCommand(program);
+registerContractsCommand(program);
 
 // Smart default: if no command given, run dashboard on current directory
 if (process.argv.length === 2) {
