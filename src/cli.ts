@@ -34,9 +34,6 @@ import { registerCostCommand } from './commands/cost.js';
 import { registerGenerateRulesCommand } from './commands/generateRules.js';
 import { registerRegressionCommand } from './commands/regression.js';
 import { registerHistoryCommand } from './commands/history.js';
-import { registerAbCommand } from './commands/ab.js';
-import { registerScoreCommand } from './commands/score.js';
-import { registerFlakyCommand } from './commands/flaky.js';
 import { handleError } from './utils/errors.js';
 
 const program = new Command();
@@ -85,8 +82,5 @@ registerCostCommand(program);
 registerGenerateRulesCommand(program);
 registerRegressionCommand(program);
 registerHistoryCommand(program);
-registerAbCommand(program);
-registerScoreCommand(program);
-registerFlakyCommand(program);
 
 program.parseAsync(process.argv).catch(handleError);
