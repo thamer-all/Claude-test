@@ -1,5 +1,5 @@
 /**
- * `claude-test repl` — Interactive prompt playground.
+ * `codeprobe repl` — Interactive prompt playground.
  *
  * Provides a REPL interface for loading prompt specs, setting models,
  * and running prompts interactively in mock or live mode.
@@ -122,14 +122,14 @@ export function registerReplCommand(program: Command): void {
         liveMode: false,
       };
 
-      console.log(chalk.bold('\nclaude-test REPL'));
+      console.log(chalk.bold('\ncodeprobe REPL'));
       console.log(chalk.dim('Type .help for commands, or enter text to run a prompt.'));
       console.log(chalk.dim('Press Ctrl+C or type .exit to quit.\n'));
 
       const rl = createInterface({
         input: process.stdin,
         output: process.stdout,
-        prompt: chalk.cyan('claude-test> '),
+        prompt: chalk.cyan('codeprobe> '),
         terminal: true,
       });
 

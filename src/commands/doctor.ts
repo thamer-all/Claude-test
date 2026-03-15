@@ -1,5 +1,5 @@
 /**
- * `claude-test doctor` — Run environment diagnostics to check that
+ * `codeprobe doctor` — Run environment diagnostics to check that
  * all dependencies and configurations are in place.
  */
 
@@ -60,28 +60,28 @@ async function checkPackageJson(): Promise<DiagnosticCheck> {
   }
 }
 
-async function checkClaudeTestConfig(): Promise<DiagnosticCheck> {
+async function checkCodeprobeConfig(): Promise<DiagnosticCheck> {
   const configNames = [
-    'claude-test.config.yaml',
-    'claude-test.config.yml',
-    'claude-test.config.json',
-    '.claude-test.yaml',
-    '.claude-test.json',
+    'codeprobe.config.yaml',
+    'codeprobe.config.yml',
+    'codeprobe.config.json',
+    '.codeprobe.yaml',
+    '.codeprobe.json',
   ];
 
   for (const name of configNames) {
     try {
       await access(join(process.cwd(), name));
-      return { name: 'claude-test config', status: 'pass', message: `Found: ${name}` };
+      return { name: 'codeprobe config', status: 'pass', message: `Found: ${name}` };
     } catch {
       // Try next
     }
   }
 
   return {
-    name: 'claude-test config',
+    name: 'codeprobe config',
     status: 'warn',
-    message: 'No config file found. Run `claude-test init` to create one.',
+    message: 'No config file found. Run `codeprobe init` to create one.',
   };
 }
 
@@ -94,7 +94,7 @@ async function checkPromptsDir(): Promise<DiagnosticCheck> {
     return {
       name: 'prompts/ directory',
       status: 'warn',
-      message: 'Not found. Run `claude-test init` to create starter files.',
+      message: 'Not found. Run `codeprobe init` to create starter files.',
     };
   }
 }
@@ -135,7 +135,7 @@ async function checkTiktoken(): Promise<DiagnosticCheck> {
 
 async function checkDiskSpace(): Promise<DiagnosticCheck> {
   try {
-    const cacheDir = join(process.env['HOME'] ?? '/tmp', '.claude-test', 'cache');
+    const cacheDir = join(process.env['HOME'] ?? '/tmp', '.codeprobe', 'cache');
     try {
       await access(cacheDir);
       return { name: 'Cache directory', status: 'pass', message: cacheDir };
@@ -156,7 +156,7 @@ export async function doctorRunner(): Promise<DiagnosticCheck[]> {
     checkNpmInstalled(),
     checkGitInstalled(),
     checkPackageJson(),
-    checkClaudeTestConfig(),
+    checkCodeprobeConfig(),
     checkPromptsDir(),
     checkClaudeMd(),
     checkTiktoken(),

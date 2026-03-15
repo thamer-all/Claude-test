@@ -1,5 +1,5 @@
 /**
- * `claude-test models` — List all available models from the registry.
+ * `codeprobe models` — List all available models from the registry.
  *
  * Displays a formatted table of model ID, provider, name, context window,
  * and pricing. Supports filtering by provider and JSON output.

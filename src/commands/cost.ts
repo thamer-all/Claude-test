@@ -1,5 +1,5 @@
 /**
- * `claude-test cost [path]` — Estimate context cost across AI models.
+ * `codeprobe cost [path]` — Estimate context cost across AI models.
  *
  * Analyzes the repository token count and shows how much it would cost
  * to send the full context to various popular models.

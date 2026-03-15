@@ -1,5 +1,5 @@
 /**
- * `claude-test simulate [path]` — Simulate context fit against
+ * `codeprobe simulate [path]` — Simulate context fit against
  * target context windows.
  */
 
@@ -75,7 +75,7 @@ async function repositorySimulator(
 
   const recommendations: string[] = [];
   if (totalTokens > 200_000) {
-    recommendations.push('Consider using `claude-test pack` to build an optimized context plan.');
+    recommendations.push('Consider using `codeprobe pack` to build an optimized context plan.');
   }
   if (totalTokens > 1_000_000) {
     recommendations.push('Repository exceeds 1M tokens. Focus on core files and use summaries for large docs.');

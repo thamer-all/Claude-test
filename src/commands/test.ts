@@ -1,5 +1,5 @@
 /**
- * `claude-test test [path]` — Run prompt tests against specs.
+ * `codeprobe test [path]` — Run prompt tests against specs.
  *
  * Supports mock and live execution modes, watch mode, caching,
  * dataset evaluation, and JSON output.

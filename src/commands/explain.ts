@@ -1,5 +1,5 @@
 /**
- * `claude-test explain <prompt-file>` — Explain a prompt spec in
+ * `codeprobe explain <prompt-file>` — Explain a prompt spec in
  * human-readable form, breaking down its structure and purpose.
  */
 

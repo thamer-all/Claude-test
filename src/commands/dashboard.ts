@@ -1,5 +1,5 @@
 /**
- * `claude-test dashboard [path]` — Rich terminal dashboard.
+ * `codeprobe dashboard [path]` — Rich terminal dashboard.
  *
  * Runs context analysis, asset scanning, doctor checks, and workflow
  * detection, then prints a beautiful overview using chalk and Unicode
@@ -333,7 +333,7 @@ function renderDoctor(
       label = `git v${gitMatch ? gitMatch[0] : ''}`;
     } else if (c.name === 'package.json') {
       label = 'package.json';
-    } else if (c.name === 'claude-test config' || c.name === 'Configuration file') {
+    } else if (c.name === 'codeprobe config' || c.name === 'Configuration file') {
       label = 'config';
     } else if (c.name === 'CLAUDE.md') {
       label = 'CLAUDE.md';
@@ -565,7 +565,7 @@ export function registerDashboardCommand(program: Command): void {
       console.log('');
 
       // Header box
-      console.log(topBox(chalk, 'claude-test dashboard', targetPath));
+      console.log(topBox(chalk, 'codeprobe dashboard', targetPath));
       console.log('');
 
       // Overview

@@ -1,5 +1,5 @@
 /**
- * `claude-test heatmap [path]` — Token heatmap showing the largest
+ * `codeprobe heatmap [path]` — Token heatmap showing the largest
  * files by estimated token count with ASCII bar charts.
  */
 

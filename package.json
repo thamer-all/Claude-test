@@ -1,11 +1,11 @@
 {
-  "name": "claude-test",
+  "name": "codeprobe",
   "version": "0.1.0",
   "description": "DevTools for Claude — context engineering toolkit for Claude Code",
   "type": "module",
   "main": "dist/cli.js",
   "bin": {
-    "claude-test": "dist/cli.js"
+    "codeprobe": "dist/cli.js"
   },
   "scripts": {
     "build": "tsc",

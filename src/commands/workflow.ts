@@ -1,5 +1,5 @@
 /**
- * `claude-test workflow [path]` — Detect and report on agentic workflow patterns.
+ * `codeprobe workflow [path]` — Detect and report on agentic workflow patterns.
  *
  * Scans for task tracking, self-improvement loops, plans, and AI tool configs.
  */

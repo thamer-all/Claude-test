@@ -1,5 +1,5 @@
 /**
- * `claude-test pack [path]` — Build a context pack plan.
+ * `codeprobe pack [path]` — Build a context pack plan.
  *
  * Analyzes the repository and produces a prioritized plan for fitting
  * content into a target context window, with budget breakdowns and

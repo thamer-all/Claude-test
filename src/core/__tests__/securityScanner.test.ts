@@ -7,7 +7,7 @@ import { scanSecurity } from '../../core/securityScanner.js';
 let tempDir: string;
 
 beforeAll(() => {
-  tempDir = join(tmpdir(), `claude-test-security-${Date.now()}`);
+  tempDir = join(tmpdir(), `codeprobe-security-${Date.now()}`);
   mkdirSync(tempDir, { recursive: true });
 });
 

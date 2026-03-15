@@ -1,8 +1,8 @@
 /**
- * Configuration types for claude-test.
+ * Configuration types for codeprobe.
  */
 
-export interface ClaudeTestConfig {
+export interface CodeprobeConfig {
   defaultModel?: string;
   defaultContextTarget?: '200k' | '1m';
   ignorePaths?: string[];
@@ -29,3 +29,6 @@ export interface BenchmarkConfig {
   runs?: number;
   warmup?: boolean;
 }
+
+/** @deprecated Use CodeprobeConfig instead. */
+export type ClaudeTestConfig = CodeprobeConfig;

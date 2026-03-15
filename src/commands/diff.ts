@@ -1,5 +1,5 @@
 /**
- * `claude-test diff <a> <b>` — Compare two prompt spec files.
+ * `codeprobe diff <a> <b>` — Compare two prompt spec files.
  */
 
 import { Command } from 'commander';

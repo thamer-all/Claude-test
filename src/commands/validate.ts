@@ -1,5 +1,5 @@
 /**
- * `claude-test validate [path]` — Validate prompt specs, skill files,
+ * `codeprobe validate [path]` — Validate prompt specs, skill files,
  * and Claude configuration files for structural correctness.
  */
 
@@ -235,11 +235,11 @@ export function registerValidateCommand(program: Command): void {
 
         // Check for config files
         const configNames = [
-          'claude-test.config.yaml',
-          'claude-test.config.yml',
-          'claude-test.config.json',
-          '.claude-test.yaml',
-          '.claude-test.json',
+          'codeprobe.config.yaml',
+          'codeprobe.config.yml',
+          'codeprobe.config.json',
+          '.codeprobe.yaml',
+          '.codeprobe.json',
         ];
         for (const name of configNames) {
           const configPath = resolve(targetPath, name);

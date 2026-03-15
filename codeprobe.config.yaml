@@ -1,5 +1,5 @@
-# claude-test configuration
-# DevTools for Claude — context engineering toolkit
+# codeprobe configuration
+# DevTools for AI Coding — context engineering toolkit
 
 # Default model for prompt testing and benchmarks
 defaultModel: claude-sonnet-4-6

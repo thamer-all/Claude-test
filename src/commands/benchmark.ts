@@ -1,5 +1,5 @@
 /**
- * `claude-test benchmark [path]` — Benchmark a prompt across models.
+ * `codeprobe benchmark [path]` — Benchmark a prompt across models.
  */
 
 import { Command } from 'commander';

@@ -1,7 +1,7 @@
 # basic-test.prompt.yaml
 #
-# A minimal example showing how to write a prompt test with claude-test.
-# Run it with: claude-test test examples/basic-test.prompt.yaml
+# A minimal example showing how to write a prompt test with codeprobe.
+# Run it with: codeprobe test examples/basic-test.prompt.yaml
 
 name: basic-test
 description: Extract the programming language mentioned in the input text

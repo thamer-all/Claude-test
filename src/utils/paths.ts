@@ -33,11 +33,11 @@ export function getRelativePath(from: string, to: string): string {
 }
 
 /**
- * Get the cache directory for claude-test.
+ * Get the cache directory for codeprobe.
  *
  * Follows XDG conventions on Linux/macOS:
- *   $XDG_CACHE_HOME/claude-test  (if set)
- *   ~/.cache/claude-test          (default)
+ *   $XDG_CACHE_HOME/codeprobe  (if set)
+ *   ~/.cache/codeprobe          (default)
  *
  * Falls back to the OS temp directory if the home directory is not
  * available.
@@ -45,13 +45,13 @@ export function getRelativePath(from: string, to: string): string {
 export function getCacheDir(): string {
   const xdgCache = process.env['XDG_CACHE_HOME'];
   if (xdgCache) {
-    return join(xdgCache, 'claude-test');
+    return join(xdgCache, 'codeprobe');
   }
 
   const home = homedir();
   if (home) {
-    return join(home, '.cache', 'claude-test');
+    return join(home, '.cache', 'codeprobe');
   }
 
-  return join(tmpdir(), 'claude-test');
+  return join(tmpdir(), 'codeprobe');
 }

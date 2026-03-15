@@ -1,5 +1,5 @@
 /**
- * `claude-test context [path]` — Analyze repository context usage.
+ * `codeprobe context [path]` — Analyze repository context usage.
  *
  * Scans the directory tree, estimates token counts per file, and
  * reports a breakdown by extension plus fit estimates for common

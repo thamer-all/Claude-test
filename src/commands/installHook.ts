@@ -1,5 +1,5 @@
 /**
- * `claude-test install-hook` — Install a Claude Code hook into .claude/settings.json.
+ * `codeprobe install-hook` — Install a Claude Code hook into .claude/settings.json.
  *
  * Merges a hook entry (e.g. PreCommit) into the project's Claude settings
  * without overwriting existing entries.
@@ -25,7 +25,7 @@ export function registerInstallHookCommand(program: Command): void {
     .command('install-hook')
     .description('Install a Claude Code hook into .claude/settings.json')
     .option('--event <event>', 'Hook event name', 'PreCommit')
-    .option('--command <cmd>', 'Command to run', 'claude-test test --json')
+    .option('--command <cmd>', 'Command to run', 'codeprobe test --json')
     .option('--dry-run', 'Show what would be written without modifying files')
     .action(async (options: {
       event: string;

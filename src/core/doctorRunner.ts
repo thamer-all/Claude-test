@@ -2,7 +2,7 @@
  * Doctor runner: environment and project diagnostics.
  *
  * Runs a series of checks to verify that the development environment
- * and project structure are properly configured for claude-test.
+ * and project structure are properly configured for codeprobe.
  */
 
 import { stat, access, constants } from 'node:fs/promises';
@@ -103,11 +103,16 @@ async function checkDatasetsDir(): Promise<DiagnosticCheck> {
 }
 
 /**
- * Check that claude-test.config.yaml exists.
+ * Check that codeprobe.config.yaml exists.
  */
 async function checkConfigFile(): Promise<DiagnosticCheck> {
   const root = resolveProjectRoot();
   const configNames = [
+    'codeprobe.config.yaml',
+    'codeprobe.config.yml',
+    '.codeprobe.yaml',
+    '.codeprobe.yml',
+    // Backward compat: also check legacy config file names
     'claude-test.config.yaml',
     'claude-test.config.yml',
     '.claude-test.yaml',
@@ -128,9 +133,9 @@ async function checkConfigFile(): Promise<DiagnosticCheck> {
   return {
     name: 'Configuration file',
     status: 'warn',
-    message: 'No claude-test configuration file found.',
+    message: 'No codeprobe configuration file found.',
     details:
-      'Create a claude-test.config.yaml file to customize default settings. ' +
+      'Create a codeprobe.config.yaml file to customize default settings. ' +
       'Run with defaults if no configuration is needed.',
   };
 }
@@ -281,7 +286,7 @@ async function checkTypeScript(): Promise<DiagnosticCheck> {
  * 1. Node.js version (>= 18)
  * 2. prompts/ directory exists
  * 3. datasets/ directory exists
- * 4. claude-test.config.yaml exists
+ * 4. codeprobe.config.yaml exists
  * 5. ANTHROPIC_API_KEY env var is set
  * 6. .cache/ directory exists/writable
  * 7. package.json exists

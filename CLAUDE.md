@@ -1,4 +1,4 @@
-# claude-test
+# codeprobe
 
 DevTools for AI Coding — Context Engineering Toolkit for Claude, Cursor, Copilot, and more.
 
@@ -60,7 +60,7 @@ src/
 - **Multi-provider**: Supports Anthropic, OpenAI, Google, DeepSeek, Qwen, Mistral, Meta (via OpenAI-compatible API), and local models (Ollama, vLLM). Provider implementations live in `src/core/providers/`.
 - **Optional live API**: The Anthropic SDK is dynamically imported at runtime, not listed as a dependency. Users install it themselves if they want live calls.
 - **Context engineering focus**: `context`, `simulate`, `pack`, `map`, and `heatmap` are the primary differentiators.
-- **Configuration via YAML**: `claude-test.config.yaml` at project root. Prompt specs are also YAML files in `prompts/`.
+- **Configuration via YAML**: `codeprobe.config.yaml` at project root. Prompt specs are also YAML files in `prompts/`.
 
 ## Testing
 
@@ -89,7 +89,7 @@ Current test coverage:
 
 ## Project Files
 
-- `claude-test.config.yaml` — default CLI configuration (model, context target, ignore paths, budgets)
+- `codeprobe.config.yaml` — default CLI configuration (model, context target, ignore paths, budgets)
 - `prompts/` — prompt spec YAML files (used by `test`, `lint`, `validate`, `explain`)
 - `datasets/` — evaluation datasets in JSONL format (used by `benchmark`)
 - `examples/` — example prompt specs for onboarding

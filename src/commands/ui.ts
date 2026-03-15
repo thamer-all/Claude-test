@@ -1,5 +1,5 @@
 /**
- * `claude-test ui [path]` — Launch an interactive web dashboard
+ * `codeprobe ui [path]` — Launch an interactive web dashboard
  * showing context analysis, token heatmap, AI tool detection,
  * model registry, doctor checks, and workflow score.
  */
@@ -155,7 +155,7 @@ export function registerUiCommand(program: Command): void {
 
       const chalk = (await import('chalk')).default;
 
-      console.log(chalk.bold('\n  claude-test dashboard\n'));
+      console.log(chalk.bold('\n  codeprobe dashboard\n'));
       console.log(chalk.dim(`  Analyzing ${targetPath} ...\n`));
 
       // Run all analyses in parallel

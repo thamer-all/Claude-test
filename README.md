@@ -1,47 +1,47 @@
-# claude-test
+# codeprobe
 
 **DevTools for AI Coding — Context Engineering Toolkit for Claude, Cursor, Copilot, and more**
 
-`claude-test` is a developer toolkit for testing, analyzing, and optimizing AI coding workflows. It helps you write better prompts, understand your repository's context footprint, and build production-grade AI pipelines with any major LLM provider. Works with Claude Code, Cursor, GitHub Copilot, Windsurf, Aider, and other AI coding tools.
+`codeprobe` is a developer toolkit for testing, analyzing, and optimizing AI coding workflows. It helps you write better prompts, understand your repository's context footprint, and build production-grade AI pipelines with any major LLM provider. Works with Claude Code, Cursor, GitHub Copilot, Windsurf, Aider, and other AI coding tools.
 
 ---
 
 ## Why Context Engineering Matters
 
-Claude's effectiveness depends on what you put in the context window. Most developers waste context on irrelevant files, oversized prompts, or poorly structured instructions. `claude-test` gives you the tools to measure, analyze, and optimize every token you send to Claude.
+Claude's effectiveness depends on what you put in the context window. Most developers waste context on irrelevant files, oversized prompts, or poorly structured instructions. `codeprobe` gives you the tools to measure, analyze, and optimize every token you send to Claude.
 
 ## Install
 
 ```bash
-npm install -g claude-test
+npm install -g codeprobe
 ```
 
 ## Quickstart
 
 ```bash
 # Set up starter files and config
-claude-test init
+codeprobe init
 
 # Run prompt tests
-claude-test test
+codeprobe test
 
 # Analyze your repo's context footprint
-claude-test context
+codeprobe context
 
 # Simulate whether your repo fits in Claude's context window
-claude-test simulate
+codeprobe simulate
 
 # Build an optimized context packing plan
-claude-test pack --target 1m
+codeprobe pack --target 1m
 
 # Lint your prompts for quality issues
-claude-test lint
+codeprobe lint
 
 # Check environment readiness
-claude-test doctor
+codeprobe doctor
 
 # Generate a CLAUDE.md from repo analysis
-claude-test generate-claudemd
+codeprobe generate-claudemd
 ```
 
 ## Core Commands
@@ -108,16 +108,16 @@ tests:
 Run tests:
 
 ```bash
-claude-test test prompts/
+codeprobe test prompts/
 
 # With watch mode
-claude-test test --watch
+codeprobe test --watch
 
 # With caching
-claude-test test --cache
+codeprobe test --cache
 
 # JSON output for CI
-claude-test test --json
+codeprobe test --json
 ```
 
 ### Assertions
@@ -135,7 +135,7 @@ claude-test test --json
 Test prompts against JSONL datasets:
 
 ```bash
-claude-test test prompts/summarize.prompt.yaml --dataset datasets/sample.jsonl
+codeprobe test prompts/summarize.prompt.yaml --dataset datasets/sample.jsonl
 ```
 
 Dataset format (one JSON object per line):
@@ -146,12 +146,12 @@ Dataset format (one JSON object per line):
 
 ## Context Engineering
 
-This is where `claude-test` stands apart. These commands help you understand, measure, and optimize what goes into Claude's context window.
+This is where `codeprobe` stands apart. These commands help you understand, measure, and optimize what goes into Claude's context window.
 
 ### Analyze Context
 
 ```bash
-claude-test context .
+codeprobe context .
 ```
 
 Shows scanned files, total bytes, estimated tokens, extension breakdown, largest files, and fit estimates for 200k and 1M windows.
@@ -159,7 +159,7 @@ Shows scanned files, total bytes, estimated tokens, extension breakdown, largest
 ### Simulate Context Fit
 
 ```bash
-claude-test simulate .
+codeprobe simulate .
 ```
 
 Estimates whether your repository fits into Claude's context window with reserved budget for system prompts and tools.
@@ -167,7 +167,7 @@ Estimates whether your repository fits into Claude's context window with reserve
 ### Pack Context
 
 ```bash
-claude-test pack . --target 1m --optimize
+codeprobe pack . --target 1m --optimize
 ```
 
 Builds an optimized context packing plan: which files to include first, which to summarize, which to exclude. Budget breakdown across system prompt, core files, docs, and tool metadata.
@@ -175,7 +175,7 @@ Builds an optimized context packing plan: which files to include first, which to
 ### Context Map
 
 ```bash
-claude-test map .
+codeprobe map .
 ```
 
 Token distribution by directory — see where your context budget goes.
@@ -183,7 +183,7 @@ Token distribution by directory — see where your context budget goes.
 ### Token Heatmap
 
 ```bash
-claude-test heatmap . --top 20
+codeprobe heatmap . --top 20
 ```
 
 Identifies the files consuming the most tokens in your repository.
@@ -194,37 +194,37 @@ Scan repositories for Claude-related workflow assets.
 
 ```bash
 # Find all Claude assets (CLAUDE.md, .claude/, skills, hooks, MCP configs)
-claude-test agents .
+codeprobe agents .
 
 # Detect hook configurations
-claude-test hooks .
+codeprobe hooks .
 
 # Find MCP server definitions
-claude-test mcp .
+codeprobe mcp .
 ```
 
 ## Prompt Quality
 
 ```bash
 # Lint prompts for common issues
-claude-test lint prompts/
+codeprobe lint prompts/
 
 # Get improvement suggestions
-claude-test improve prompts/summarize.prompt.yaml
+codeprobe improve prompts/summarize.prompt.yaml
 
 # Explain potential weaknesses
-claude-test explain prompts/summarize.prompt.yaml
+codeprobe explain prompts/summarize.prompt.yaml
 
 # Security checks for injection risks
-claude-test security prompts/
+codeprobe security prompts/
 
 # Validate prompt spec structure
-claude-test validate .
+codeprobe validate .
 ```
 
 ## Configuration
 
-Create `claude-test.config.yaml` in your project root:
+Create `codeprobe.config.yaml` in your project root:
 
 ```yaml
 defaultModel: claude-sonnet-4-6
@@ -257,39 +257,39 @@ benchmarkDefaults:
 Add to your GitHub Actions workflow:
 
 ```yaml
-- name: Install claude-test
-  run: npm install -g claude-test
+- name: Install codeprobe
+  run: npm install -g codeprobe
 
 - name: Validate prompts
-  run: claude-test validate --json
+  run: codeprobe validate --json
 
 - name: Run prompt tests
-  run: claude-test test --json
+  run: codeprobe test --json
 
 - name: Lint prompts
-  run: claude-test lint --json
+  run: codeprobe lint --json
 ```
 
-`claude-test` exits with non-zero codes on failures, making it CI-friendly.
+`codeprobe` exits with non-zero codes on failures, making it CI-friendly.
 
 ## Claude Code Integration
 
 ### Context Engineering for Claude Code
 
-claude-test helps you optimize your project for Claude Code:
+codeprobe helps you optimize your project for Claude Code:
 
 ```bash
 # Analyze how much of your repo fits in Claude's context
-claude-test context .
+codeprobe context .
 
 # Get a packing plan -- what to include in CLAUDE.md
-claude-test pack . --target 200k
+codeprobe pack . --target 200k
 
 # Generate a CLAUDE.md from repo analysis
-claude-test generate-claudemd
+codeprobe generate-claudemd
 
 # See which files consume the most tokens
-claude-test heatmap . --top 20
+codeprobe heatmap . --top 20
 ```
 
 ### Hooks
@@ -298,7 +298,7 @@ Run prompt tests automatically when working with Claude Code:
 
 ```bash
 # Install a hook for Claude Code
-claude-test install-hook
+codeprobe install-hook
 
 # Or configure manually in .claude/settings.json
 ```
@@ -310,7 +310,7 @@ Example `.claude/settings.json`:
   "hooks": {
     "PreCommit": [
       {
-        "command": "claude-test test --json",
+        "command": "codeprobe test --json",
         "description": "Run prompt regression tests"
       }
     ]
@@ -325,18 +325,18 @@ Test prompts against the real Claude API:
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...
 npm install @anthropic-ai/sdk
-claude-test test --mode live
-claude-test benchmark prompts/my-prompt.yaml
+codeprobe test --mode live
+codeprobe benchmark prompts/my-prompt.yaml
 ```
 
 See [Claude Code Integration Guide](docs/claude-code-integration.md) for the full setup guide.
 
 ## AI Tool Detection
 
-claude-test detects configuration files for all major AI coding tools:
+codeprobe detects configuration files for all major AI coding tools:
 
 ```bash
-claude-test agents .
+codeprobe agents .
 ```
 
 Supported tools: Claude Code, Cursor, Windsurf, GitHub Copilot, Aider, Continue.dev, Cline, OpenAI Codex CLI.
@@ -344,14 +344,14 @@ Supported tools: Claude Code, Cursor, Windsurf, GitHub Copilot, Aider, Continue.
 ### Agentic Workflow Analysis
 
 ```bash
-claude-test workflow .
+codeprobe workflow .
 ```
 
 Detects task tracking (todo.md), self-improvement loops (lessons.md), plan files, and AI tool configurations.
 
 ## Multi-Provider Support
 
-claude-test supports models from all major AI providers:
+codeprobe supports models from all major AI providers:
 
 | Provider | Models | API Key |
 |----------|--------|---------|

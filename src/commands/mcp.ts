@@ -1,5 +1,5 @@
 /**
- * `claude-test mcp [path]` — Detect MCP (Model Context Protocol) configs.
+ * `codeprobe mcp [path]` — Detect MCP (Model Context Protocol) configs.
  */
 
 import { Command } from 'commander';

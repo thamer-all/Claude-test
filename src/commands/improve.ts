@@ -1,5 +1,5 @@
 /**
- * `claude-test improve <prompt-file>` — Suggest improvements for a
+ * `codeprobe improve <prompt-file>` — Suggest improvements for a
  * prompt spec.
  */
 

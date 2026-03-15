@@ -1,4 +1,4 @@
-# claude-test Production Readiness Plan
+# codeprobe Production Readiness Plan
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
@@ -25,7 +25,7 @@
 
 ### Missing for Production
 10. **No unit tests** — zero test files.
-11. **No `npx` smoke test** — `npx claude-test` untested.
+11. **No `npx` smoke test** — `npx codeprobe` untested.
 12. **No shebang permission** — `dist/cli.js` may not be executable.
 13. **No CLAUDE.md for the project itself** — ironic for a context engineering tool.
 14. **Live benchmark mode** — not connected to anthropicClient.
@@ -33,9 +33,9 @@
 16. **No usage guide for Claude Code users** — how to add hooks, MCP, etc.
 
 ### Missing for Claude Code Integration
-17. **No Claude Code hook integration** — users can't run `claude-test` as a pre-commit or post-edit hook.
-18. **No MCP server mode** — can't expose claude-test as MCP tools to Claude Code.
-19. **No `claude-test generate-claude-md`** command — should generate a CLAUDE.md context file from repo analysis.
+17. **No Claude Code hook integration** — users can't run `codeprobe` as a pre-commit or post-edit hook.
+18. **No MCP server mode** — can't expose codeprobe as MCP tools to Claude Code.
+19. **No `codeprobe generate-claude-md`** command — should generate a CLAUDE.md context file from repo analysis.
 20. **No guidance on `.claude/settings.json` hook config**.
 21. **README doesn't explain Claude Code integration**.
 
@@ -53,7 +53,7 @@ In `src/commands/init.ts`, replace all occurrences of:
 - `claude-sonnet-4-20250514` → `claude-sonnet-4-6`
 - `claude-haiku-4-20250414` → `claude-opus-4-6`
 
-Also change the config budgets from fractional (0.10) to percentage integers (10) to match the main `claude-test.config.yaml`:
+Also change the config budgets from fractional (0.10) to percentage integers (10) to match the main `codeprobe.config.yaml`:
 ```yaml
 contextBudgets:
   systemPrompt: 10
@@ -69,7 +69,7 @@ In `src/commands/repl.ts`, change `claude-sonnet-4-20250514` to `claude-sonnet-4
 **Step 3: Build and verify**
 
 Run: `npm run build`
-Run: `rm -rf /tmp/ct-test && mkdir /tmp/ct-test && cd /tmp/ct-test && node "/Users/thamer/Desktop/Claude test/dist/cli.js" init && cat claude-test.config.yaml && cat prompts/summarize.prompt.yaml`
+Run: `rm -rf /tmp/ct-test && mkdir /tmp/ct-test && cd /tmp/ct-test && node "/Users/thamer/Desktop/Claude test/dist/cli.js" init && cat codeprobe.config.yaml && cat prompts/summarize.prompt.yaml`
 Expected: All model names are `claude-sonnet-4-6` or `claude-opus-4-6`. Budget values are integers (10, 50, 20, 10).
 
 **Step 4: Commit**
@@ -219,11 +219,11 @@ git commit -m "feat: add generate-claudemd command for Claude Code integration"
 
 **Step 1: Create install-hook command**
 
-`claude-test install-hook` should:
+`codeprobe install-hook` should:
 1. Read or create `.claude/settings.json`
-2. Add a hook entry that runs `claude-test test --json` as a pre-commit or custom event hook
+2. Add a hook entry that runs `codeprobe test --json` as a pre-commit or custom event hook
 3. Support `--event <event>` flag (default: `PreCommit`)
-4. Support `--command <cmd>` flag (default: `claude-test test --json`)
+4. Support `--command <cmd>` flag (default: `codeprobe test --json`)
 5. Print what was added and how to use it
 
 Example `.claude/settings.json` hook format:
@@ -232,7 +232,7 @@ Example `.claude/settings.json` hook format:
   "hooks": {
     "PreCommit": [
       {
-        "command": "claude-test test --json",
+        "command": "codeprobe test --json",
         "description": "Run prompt regression tests before commit"
       }
     ]
@@ -243,7 +243,7 @@ Example `.claude/settings.json` hook format:
 **Step 2: Create integration docs**
 
 Create `docs/claude-code-integration.md` explaining:
-- How to install claude-test
+- How to install codeprobe
 - How to use it with Claude Code
 - How to set up hooks
 - How to use context analysis to improve your CLAUDE.md
@@ -322,7 +322,7 @@ Expected: All tests pass
 
 **Step 5: Add test to CI**
 
-In `.github/workflows/claude-test.yml`, add:
+In `.github/workflows/codeprobe.yml`, add:
 ```yaml
 - name: Test
   run: npm test
@@ -331,7 +331,7 @@ In `.github/workflows/claude-test.yml`, add:
 **Step 6: Commit**
 
 ```bash
-git add vitest.config.ts src/**/__tests__/ package.json package-lock.json .github/workflows/claude-test.yml
+git add vitest.config.ts src/**/__tests__/ package.json package-lock.json .github/workflows/codeprobe.yml
 git commit -m "test: add vitest unit tests for core modules"
 ```
 
@@ -344,8 +344,8 @@ git commit -m "test: add vitest unit tests for core modules"
 
 **Step 1: Generate and write CLAUDE.md**
 
-Use `claude-test generate-claudemd` on the project itself (or write manually). Should include:
-- What claude-test is
+Use `codeprobe generate-claudemd` on the project itself (or write manually). Should include:
+- What codeprobe is
 - How to build: `npm install && npm run build`
 - How to test: `npm test`
 - How to run: `node dist/cli.js <command>`
@@ -376,20 +376,20 @@ Add a new section after "CI Integration" explaining:
 
 ### Context Engineering for Claude Code
 
-claude-test helps you optimize your project for Claude Code:
+codeprobe helps you optimize your project for Claude Code:
 
 ```bash
 # Analyze how much of your repo fits in Claude's context
-claude-test context .
+codeprobe context .
 
 # Get a packing plan — what to include in CLAUDE.md
-claude-test pack . --target 200k
+codeprobe pack . --target 200k
 
 # Generate a CLAUDE.md from repo analysis
-claude-test generate-claudemd
+codeprobe generate-claudemd
 
 # See which files consume the most tokens
-claude-test heatmap . --top 20
+codeprobe heatmap . --top 20
 ```
 
 ### Hooks
@@ -398,13 +398,13 @@ Run prompt tests automatically when working with Claude Code:
 
 ```bash
 # Install a pre-commit hook for Claude Code
-claude-test install-hook
+codeprobe install-hook
 
 # Or configure manually in .claude/settings.json:
 {
   "hooks": {
     "PreCommit": [{
-      "command": "claude-test test --json"
+      "command": "codeprobe test --json"
     }]
   }
 }
@@ -417,8 +417,8 @@ Test prompts against the real Claude API:
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...
 npm install @anthropic-ai/sdk
-claude-test test --mode live
-claude-test benchmark prompts/my-prompt.yaml --mode live
+codeprobe test --mode live
+codeprobe benchmark prompts/my-prompt.yaml --mode live
 ```
 ```
 
@@ -444,16 +444,16 @@ Check that `dist/cli.js` starts with `#!/usr/bin/env node`. If not, fix `src/cli
 **Step 2: Test npx**
 
 ```bash
-npm pack  # Creates claude-test-0.1.0.tgz
-npx ./claude-test-0.1.0.tgz --version  # Should print 0.1.0
-npx ./claude-test-0.1.0.tgz doctor     # Should run diagnostics
+npm pack  # Creates codeprobe-0.1.0.tgz
+npx ./codeprobe-0.1.0.tgz --version  # Should print 0.1.0
+npx ./codeprobe-0.1.0.tgz doctor     # Should run diagnostics
 ```
 
 **Step 3: Verify package.json fields**
 
 Ensure:
 - `"files": ["dist", "README.md", "LICENSE"]` is set
-- `"bin": { "claude-test": "dist/cli.js" }` is set
+- `"bin": { "codeprobe": "dist/cli.js" }` is set
 - `"type": "module"` is set
 - `"engines": { "node": ">=18.0.0" }` is set
 - Repository URL is filled in
@@ -474,50 +474,50 @@ git tag v0.1.0
 
 ---
 
-## Summary: How People Use claude-test with Claude Code
+## Summary: How People Use codeprobe with Claude Code
 
 ### Install
 ```bash
-npm install -g claude-test
+npm install -g codeprobe
 ```
 
 ### Understand Your Repo's Context
 ```bash
-claude-test context .        # How many tokens is your repo?
-claude-test simulate .       # Does it fit in Claude's window?
-claude-test map .            # Where are the tokens?
-claude-test heatmap .        # Which files are heaviest?
-claude-test pack . --target 200k  # What should Claude see?
+codeprobe context .        # How many tokens is your repo?
+codeprobe simulate .       # Does it fit in Claude's window?
+codeprobe map .            # Where are the tokens?
+codeprobe heatmap .        # Which files are heaviest?
+codeprobe pack . --target 200k  # What should Claude see?
 ```
 
 ### Generate Better CLAUDE.md
 ```bash
-claude-test generate-claudemd  # Auto-generate from analysis
+codeprobe generate-claudemd  # Auto-generate from analysis
 ```
 
 ### Test Your Prompts
 ```bash
-claude-test init             # Create example prompt specs
-claude-test test             # Run tests (mock mode)
-claude-test test --mode live # Run against real Claude API
-claude-test lint             # Check prompt quality
-claude-test security         # Check for injection risks
+codeprobe init             # Create example prompt specs
+codeprobe test             # Run tests (mock mode)
+codeprobe test --mode live # Run against real Claude API
+codeprobe lint             # Check prompt quality
+codeprobe security         # Check for injection risks
 ```
 
 ### Integrate with Claude Code
 ```bash
-claude-test install-hook     # Add pre-commit hook
-claude-test agents .         # Find all Claude assets
-claude-test hooks .          # See hook configurations
-claude-test mcp .            # Find MCP configs
+codeprobe install-hook     # Add pre-commit hook
+codeprobe agents .         # Find all Claude assets
+codeprobe hooks .          # See hook configurations
+codeprobe mcp .            # Find MCP configs
 ```
 
 ### CI/CD
 ```yaml
 # .github/workflows/prompts.yml
-- run: npm install -g claude-test
-- run: claude-test validate --json
-- run: claude-test test --json
-- run: claude-test lint --json
-- run: claude-test security --json
+- run: npm install -g codeprobe
+- run: codeprobe validate --json
+- run: codeprobe test --json
+- run: codeprobe lint --json
+- run: codeprobe security --json
 ```

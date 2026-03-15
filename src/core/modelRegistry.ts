@@ -1,5 +1,5 @@
 /**
- * Universal model registry for claude-test.
+ * Universal model registry for codeprobe.
  *
  * Contains pricing, context-window, and capability metadata for AI models
  * across all major providers. Used by the benchmark runner for cost estimation

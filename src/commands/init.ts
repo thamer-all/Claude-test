@@ -1,5 +1,5 @@
 /**
- * `claude-test init` — Create starter folders, example prompt files,
+ * `codeprobe init` — Create starter folders, example prompt files,
  * dataset examples, and configuration.
  */
 
@@ -9,7 +9,7 @@ import { join } from 'node:path';
 import { resolvePath } from '../utils/paths.js';
 import { fileExists, isDirectory } from '../utils/fs.js';
 
-const EXAMPLE_PROMPT_SPEC = `# Example prompt spec for claude-test
+const EXAMPLE_PROMPT_SPEC = `# Example prompt spec for codeprobe
 name: summarize
 description: Summarize an article into bullet points
 model: claude-sonnet-4-6
@@ -78,8 +78,8 @@ becomes increasingly important. The challenge shifts from "what fits" to
 detail for each specific task.
 `;
 
-const EXAMPLE_CONFIG = `# claude-test configuration
-# See: https://github.com/anthropics/claude-test
+const EXAMPLE_CONFIG = `# codeprobe configuration
+# See: https://github.com/anthropics/codeprobe
 
 defaultModel: claude-sonnet-4-6
 defaultContextTarget: 200k
@@ -174,7 +174,7 @@ export function registerInitCommand(program: Command): void {
         },
         {
           type: 'file',
-          path: 'claude-test.config.yaml',
+          path: 'codeprobe.config.yaml',
           content: EXAMPLE_CONFIG,
           description: 'Configuration file',
         },
@@ -214,12 +214,12 @@ export function registerInitCommand(program: Command): void {
 
       console.log('');
       console.log(
-        chalk.bold(`Initialized claude-test project: ${created} created, ${skipped} skipped`),
+        chalk.bold(`Initialized codeprobe project: ${created} created, ${skipped} skipped`),
       );
       console.log('');
       console.log(chalk.dim('Next steps:'));
       console.log(chalk.dim('  1. Edit prompts/summarize.prompt.yaml with your prompt'));
-      console.log(chalk.dim('  2. Run: claude-test test'));
-      console.log(chalk.dim('  3. Run: claude-test context'));
+      console.log(chalk.dim('  2. Run: codeprobe test'));
+      console.log(chalk.dim('  3. Run: codeprobe context'));
     });
 }

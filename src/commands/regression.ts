@@ -1,5 +1,5 @@
 /**
- * `claude-test regression [path]` — Run tests and compare against a saved baseline.
+ * `codeprobe regression [path]` — Run tests and compare against a saved baseline.
  *
  * First run with `--save` to establish a baseline of passing tests.
  * Subsequent runs compare current results against that baseline and

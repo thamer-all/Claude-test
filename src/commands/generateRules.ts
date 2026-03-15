@@ -1,5 +1,5 @@
 /**
- * `claude-test generate-rules [path]` — Generate AI tool config files
+ * `codeprobe generate-rules [path]` — Generate AI tool config files
  * for Cursor (.cursorrules), Windsurf (.windsurfrules), and GitHub Copilot
  * (.github/copilot-instructions.md) based on repository analysis.
  *

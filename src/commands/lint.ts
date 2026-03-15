@@ -1,5 +1,5 @@
 /**
- * `claude-test lint [path]` — Lint prompt spec files for common issues.
+ * `codeprobe lint [path]` — Lint prompt spec files for common issues.
  */
 
 import { Command } from 'commander';

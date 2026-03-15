@@ -1,5 +1,5 @@
 /**
- * Logging utilities for claude-test CLI.
+ * Logging utilities for codeprobe CLI.
  */
 
 import chalk from 'chalk';

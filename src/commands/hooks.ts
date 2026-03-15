@@ -1,5 +1,5 @@
 /**
- * `claude-test hooks [path]` — Detect hooks in the project.
+ * `codeprobe hooks [path]` — Detect hooks in the project.
  *
  * Scans for git hooks, Claude hooks, pre-commit configs, and
  * other hook-like configurations.

@@ -3,10 +3,10 @@
  */
 
 /**
- * Base error for all claude-test errors. Carries a machine-readable
+ * Base error for all codeprobe errors. Carries a machine-readable
  * `code` and optional structured `details`.
  */
-export class ClaudeTestError extends Error {
+export class CodeprobeError extends Error {
   readonly code: string;
   readonly details?: Record<string, unknown>;
 
@@ -16,7 +16,7 @@ export class ClaudeTestError extends Error {
     details?: Record<string, unknown>,
   ) {
     super(message);
-    this.name = 'ClaudeTestError';
+    this.name = 'CodeprobeError';
     this.code = code;
     this.details = details;
 
@@ -29,7 +29,7 @@ export class ClaudeTestError extends Error {
  * Raised when a configuration file is missing, malformed, or contains
  * invalid values.
  */
-export class ConfigError extends ClaudeTestError {
+export class ConfigError extends CodeprobeError {
   constructor(message: string, details?: Record<string, unknown>) {
     super(message, 'CONFIG_ERROR', details);
     this.name = 'ConfigError';
@@ -39,7 +39,7 @@ export class ConfigError extends ClaudeTestError {
 /**
  * Raised when a prompt spec file cannot be parsed or is invalid.
  */
-export class PromptParseError extends ClaudeTestError {
+export class PromptParseError extends CodeprobeError {
   constructor(message: string, details?: Record<string, unknown>) {
     super(message, 'PROMPT_PARSE_ERROR', details);
     this.name = 'PromptParseError';
@@ -49,7 +49,7 @@ export class PromptParseError extends ClaudeTestError {
 /**
  * Raised when input data fails schema or constraint validation.
  */
-export class ValidationError extends ClaudeTestError {
+export class ValidationError extends CodeprobeError {
   constructor(message: string, details?: Record<string, unknown>) {
     super(message, 'VALIDATION_ERROR', details);
     this.name = 'ValidationError';
@@ -60,12 +60,12 @@ export class ValidationError extends ClaudeTestError {
  * Top-level error handler that prints a user-friendly message and
  * exits the process.
  *
- * - Known ClaudeTestError instances are printed cleanly.
+ * - Known CodeprobeError instances are printed cleanly.
  * - Unknown errors include a hint to report the bug.
  * - Stack traces are only printed when DEBUG is set.
  */
 export function handleError(error: unknown): never {
-  if (error instanceof ClaudeTestError) {
+  if (error instanceof CodeprobeError) {
     process.stderr.write(`\nError [${error.code}]: ${error.message}\n`);
 
     if (error.details && Object.keys(error.details).length > 0) {
@@ -99,3 +99,6 @@ export function handleError(error: unknown): never {
   process.stderr.write(`\nUnexpected error: ${String(error)}\n`);
   process.exit(1);
 }
+
+/** @deprecated Use CodeprobeError instead. */
+export { CodeprobeError as ClaudeTestError };

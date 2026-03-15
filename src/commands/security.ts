@@ -1,5 +1,5 @@
 /**
- * `claude-test security [path]` — Security checks on prompt specs
+ * `codeprobe security [path]` — Security checks on prompt specs
  * and configuration files.
  *
  * Detects potential prompt injection patterns, leaked secrets,

@@ -7,7 +7,7 @@
 import { resolve } from 'node:path';
 
 import type { SimulationResult, SimulationTarget } from '../types/context.js';
-import type { ClaudeTestConfig } from '../types/config.js';
+import type { CodeprobeConfig } from '../types/config.js';
 import { analyzeContext } from './contextAnalyzer.js';
 import { logger } from '../utils/logger.js';
 
@@ -37,7 +37,7 @@ const SIMULATION_TARGETS: Array<{ size: number; label: string }> = [
  */
 export async function simulateContext(
   rootPath: string,
-  config?: ClaudeTestConfig,
+  config?: CodeprobeConfig,
 ): Promise<SimulationResult> {
   const absoluteRoot = resolve(rootPath);
   logger.debug(`Simulating context for: ${absoluteRoot}`);
@@ -164,7 +164,7 @@ function generateRecommendations(
 
   if (!fits200k && !fits1M) {
     recommendations.push(
-      'Repository is too large for any standard context window. Use context packing (claude-test pack) to select the most relevant files.',
+      'Repository is too large for any standard context window. Use context packing (codeprobe pack) to select the most relevant files.',
     );
   }
 

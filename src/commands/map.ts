@@ -1,5 +1,5 @@
 /**
- * `claude-test map [path]` — Repository context map.
+ * `codeprobe map [path]` — Repository context map.
  *
  * Shows directory-level token distribution as a tree with bar
  * visualizations.

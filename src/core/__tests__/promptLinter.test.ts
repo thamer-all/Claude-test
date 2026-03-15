@@ -7,7 +7,7 @@ import { lintPrompt } from '../../core/promptLinter.js';
 let tempDir: string;
 
 beforeAll(() => {
-  tempDir = join(tmpdir(), `claude-test-lint-${Date.now()}`);
+  tempDir = join(tmpdir(), `codeprobe-lint-${Date.now()}`);
   mkdirSync(tempDir, { recursive: true });
 });
 

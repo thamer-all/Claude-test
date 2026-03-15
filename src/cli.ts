@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * claude-test — DevTools for AI Coding
+ * codeprobe — DevTools for AI Coding
  * Context engineering toolkit for Claude, Cursor, Copilot, and more.
  */
 
@@ -38,18 +38,18 @@ import { handleError } from './utils/errors.js';
 const program = new Command();
 
 program
-  .name('claude-test')
+  .name('codeprobe')
   .version('0.1.0')
   .description('DevTools for AI Coding — context engineering toolkit for Claude, Cursor, Copilot, and more')
   .addHelpText('after', `
 Examples:
-  $ claude-test init                    Create starter project
-  $ claude-test test                    Run all prompt tests
-  $ claude-test context .               Analyze repo context usage
-  $ claude-test pack . --target 200k    Build context pack plan
-  $ claude-test simulate . --model gpt-4o   Simulate against model context window
-  $ claude-test workflow run ci         Run a named workflow
-  $ claude-test doctor                  Check environment setup
+  $ codeprobe init                    Create starter project
+  $ codeprobe test                    Run all prompt tests
+  $ codeprobe context .               Analyze repo context usage
+  $ codeprobe pack . --target 200k    Build context pack plan
+  $ codeprobe simulate . --model gpt-4o   Simulate against model context window
+  $ codeprobe workflow run ci         Run a named workflow
+  $ codeprobe doctor                  Check environment setup
 `);
 
 registerInitCommand(program);

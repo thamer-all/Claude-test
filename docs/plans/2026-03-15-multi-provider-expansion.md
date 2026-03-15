@@ -1,6 +1,6 @@
 # Multi-Provider Expansion Plan
 
-**Goal:** Transform claude-test from a Claude-only tool into a universal DevTools for ALL AI coding assistants — Claude Code, Cursor, Windsurf, GitHub Copilot, Aider, Continue.dev, Cline, and any AI-powered coding workflow.
+**Goal:** Transform codeprobe from a Claude-only tool into a universal DevTools for ALL AI coding assistants — Claude Code, Cursor, Windsurf, GitHub Copilot, Aider, Continue.dev, Cline, and any AI-powered coding workflow.
 
 **Key Insight from the image:** Agentic coding workflows (plan mode, subagent strategy, self-improvement loops, verification, task management) are universal patterns. The tool should detect and validate these patterns regardless of which AI tool created them.
 
@@ -24,7 +24,7 @@ Support context window sizes for all models, not just Claude's 200k/1M.
 Detect agentic workflow patterns: tasks/todo.md, tasks/lessons.md, plan files.
 
 ### 6. Update branding and docs
-Position as universal "DevTools for AI Coding" while keeping the claude-test name.
+Position as universal "DevTools for AI Coding" while keeping the codeprobe name.
 
 ---
 
@@ -93,7 +93,7 @@ Update simulate and pack to support all model context windows:
 
 ## Task 5: Agentic Workflow Features
 
-Add new command: `claude-test workflow [path]`
+Add new command: `codeprobe workflow [path]`
 Detect and validate agentic workflow patterns:
 - tasks/todo.md — parse checkboxes, report completion %
 - tasks/lessons.md — detect self-improvement entries
@@ -105,5 +105,5 @@ Detect and validate agentic workflow patterns:
 Update README, CLAUDE.md, and help text:
 - "DevTools for AI Coding" (subtitle)
 - "Works with Claude Code, Cursor, Windsurf, Copilot, Aider, and more"
-- Keep `claude-test` as the CLI name (it's the brand)
+- Keep `codeprobe` as the CLI name (it's the brand)
 - Update examples to show multi-provider usage

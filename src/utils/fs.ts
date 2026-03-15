@@ -1,5 +1,5 @@
 /**
- * File system utilities for claude-test.
+ * File system utilities for codeprobe.
  */
 
 import { readFile, stat, readdir } from 'node:fs/promises';

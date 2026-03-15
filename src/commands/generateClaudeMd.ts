@@ -1,5 +1,5 @@
 /**
- * `claude-test generate-claudemd [path]` — Auto-generate a CLAUDE.md file
+ * `codeprobe generate-claudemd [path]` — Auto-generate a CLAUDE.md file
  * based on repository analysis.
  *
  * Scans the directory for tech stack indicators, context budget, Claude
@@ -269,10 +269,10 @@ async function generateClaudeMdContent(
       'Repository fits comfortably in the 200k context window. Full codebase can be included.';
   } else if (fit1M?.fits) {
     strategySection =
-      'Repository fits in the 1M window but exceeds 200k. Use `claude-test pack --target 200k` to identify priority files.';
+      'Repository fits in the 1M window but exceeds 200k. Use `codeprobe pack --target 200k` to identify priority files.';
   } else {
     strategySection =
-      'Repository exceeds context windows. Focus on specific modules. Use `claude-test pack` to build a targeted context plan.';
+      'Repository exceeds context windows. Focus on specific modules. Use `codeprobe pack` to build a targeted context plan.';
   }
 
   // Assemble the final document

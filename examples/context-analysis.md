@@ -5,14 +5,14 @@ commands against a typical TypeScript project.
 
 ---
 
-## claude-test context
+## codeprobe context
 
 Analyzes the current project and reports token usage against the target window.
 
 ```
-$ claude-test context
+$ codeprobe context
 
-  claude-test context analysis
+  codeprobe context analysis
   Target window: 1,000,000 tokens
 
   Files scanned:     142
@@ -43,12 +43,12 @@ $ claude-test context
 
 ---
 
-## claude-test heatmap
+## codeprobe heatmap
 
 Visualizes token density across project directories.
 
 ```
-$ claude-test heatmap
+$ codeprobe heatmap
 
   Token density heatmap
 
@@ -68,12 +68,12 @@ $ claude-test heatmap
 
 ---
 
-## claude-test simulate
+## codeprobe simulate
 
 Simulates context window assembly for a given task description.
 
 ```
-$ claude-test simulate "fix the token counting bug in the heatmap command"
+$ codeprobe simulate "fix the token counting bug in the heatmap command"
 
   Simulated context assembly
   Task: "fix the token counting bug in the heatmap command"
@@ -95,16 +95,16 @@ $ claude-test simulate "fix the token counting bug in the heatmap command"
 
 ---
 
-## claude-test map
+## codeprobe map
 
 Generates a structural map of the project for inclusion in context.
 
 ```
-$ claude-test map
+$ codeprobe map
 
   Project map (token-annotated)
 
-  claude-test/
+  codeprobe/
     src/
       cli.ts                          420 tokens
       commands/

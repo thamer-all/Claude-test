@@ -1,8 +1,8 @@
 # Claude Code Integration Guide
 
-## What is claude-test?
+## What is codeprobe?
 
-claude-test is a DevTools CLI for Claude -- a context engineering toolkit that helps
+codeprobe is a DevTools CLI for Claude -- a context engineering toolkit that helps
 you test prompts, analyze repository context, and optimize what Claude sees when
 working with your codebase.
 
@@ -12,14 +12,14 @@ the quality and consistency of AI-assisted development workflows.
 ## Installation
 
 ```bash
-npm install -g claude-test
+npm install -g codeprobe
 ```
 
 Verify the installation:
 
 ```bash
-claude-test --version
-claude-test doctor
+codeprobe --version
+codeprobe doctor
 ```
 
 The `doctor` command checks that your environment is configured correctly, including
@@ -28,16 +28,16 @@ Node.js version, optional dependencies, and API key availability.
 ## Context Engineering Workflow
 
 Context engineering is the practice of curating what an LLM sees so it produces
-better results. claude-test provides several commands for this.
+better results. codeprobe provides several commands for this.
 
 ### 1. Analyze Your Repository
 
 ```bash
 # Analyze context usage across your repo
-claude-test context .
+codeprobe context .
 
 # Output as JSON for scripting
-claude-test context . --json
+codeprobe context . --json
 ```
 
 This scans your project and reports how much context different files, directories,
@@ -46,7 +46,7 @@ documentation.
 
 ```bash
 # Simulate what Claude sees for a given token budget
-claude-test simulate . --budget 100000
+codeprobe simulate . --budget 100000
 ```
 
 The simulate command shows which files would fit within a token budget, helping you
@@ -54,7 +54,7 @@ understand what Claude can realistically process.
 
 ```bash
 # Generate a dependency and structure map
-claude-test map .
+codeprobe map .
 ```
 
 The map command produces a structural overview of your codebase -- modules, entry
@@ -62,7 +62,7 @@ points, and key relationships.
 
 ```bash
 # Generate a heatmap of context density
-claude-test heatmap .
+codeprobe heatmap .
 ```
 
 The heatmap command visualizes which parts of your codebase are context-heavy,
@@ -72,10 +72,10 @@ helping you find areas that need summarization or splitting.
 
 ```bash
 # Auto-generate a CLAUDE.md for your project
-claude-test generate-claudemd
+codeprobe generate-claudemd
 
 # Specify an output path
-claude-test generate-claudemd --output docs/CLAUDE.md
+codeprobe generate-claudemd --output docs/CLAUDE.md
 ```
 
 A CLAUDE.md file provides persistent instructions that Claude Code reads at the start
@@ -86,10 +86,10 @@ test configuration, and coding conventions to produce a tailored file.
 
 ```bash
 # Build a context pack plan for a 200k token budget
-claude-test pack . --target 200k
+codeprobe pack . --target 200k
 
 # Use a custom config
-claude-test pack . --target 150k --config claude-test.config.yaml
+codeprobe pack . --target 150k --config codeprobe.config.yaml
 ```
 
 The pack command analyzes your project and recommends which files to include,
@@ -134,19 +134,19 @@ tests:
 
 ```bash
 # Run all prompt tests (mock mode -- no API calls)
-claude-test test
+codeprobe test
 
 # Run a specific spec
-claude-test test --spec prompts/summarize.yaml
+codeprobe test --spec prompts/summarize.yaml
 
 # Output results as JSON
-claude-test test --json
+codeprobe test --json
 
 # Run in live mode (requires ANTHROPIC_API_KEY)
-claude-test test --mode live
+codeprobe test --mode live
 
 # Watch mode -- re-run on file changes
-claude-test test --watch
+codeprobe test --watch
 ```
 
 Mock mode validates your test structure and assertions without calling the API.
@@ -155,23 +155,23 @@ Live mode sends actual requests to Claude and validates the responses.
 ## Hooks Integration
 
 Claude Code supports hooks -- scripts that run automatically at specific points
-in the development workflow. claude-test can install itself as a hook so your
+in the development workflow. codeprobe can install itself as a hook so your
 prompt tests run automatically.
 
 ### Automatic Hook Installation
 
 ```bash
 # Install a PreCommit hook (default)
-claude-test install-hook
+codeprobe install-hook
 
 # Install for a different event
-claude-test install-hook --event PostCommit
+codeprobe install-hook --event PostCommit
 
 # Use a custom command
-claude-test install-hook --event PreCommit --command "claude-test test --spec prompts/critical.yaml --json"
+codeprobe install-hook --event PreCommit --command "codeprobe test --spec prompts/critical.yaml --json"
 
 # Preview without writing
-claude-test install-hook --dry-run
+codeprobe install-hook --dry-run
 ```
 
 This adds an entry to `.claude/settings.json` in your project root:
@@ -181,7 +181,7 @@ This adds an entry to `.claude/settings.json` in your project root:
   "hooks": {
     "PreCommit": [
       {
-        "command": "claude-test test --json",
+        "command": "codeprobe test --json",
         "description": "Run prompt regression tests"
       }
     ]
@@ -199,7 +199,7 @@ hooks per event, and each hook has a command and description:
   "hooks": {
     "PreCommit": [
       {
-        "command": "claude-test test --json",
+        "command": "codeprobe test --json",
         "description": "Run prompt regression tests"
       },
       {
@@ -209,7 +209,7 @@ hooks per event, and each hook has a command and description:
     ],
     "PostCommit": [
       {
-        "command": "claude-test context . --json > .context-snapshot.json",
+        "command": "codeprobe context . --json > .context-snapshot.json",
         "description": "Snapshot context usage after commit"
       }
     ]
@@ -246,10 +246,10 @@ export ANTHROPIC_API_KEY=sk-ant-...
 
 ```bash
 # Run all tests against the real API
-claude-test test --mode live
+codeprobe test --mode live
 
 # Run a single spec
-claude-test test --mode live --spec prompts/summarize.yaml
+codeprobe test --mode live --spec prompts/summarize.yaml
 ```
 
 Live tests respect the model specified in each prompt spec. Assertions are evaluated
@@ -259,10 +259,10 @@ against the actual model response.
 
 ```bash
 # Benchmark a prompt spec with multiple iterations
-claude-test benchmark --spec prompts/summarize.yaml --runs 5
+codeprobe benchmark --spec prompts/summarize.yaml --runs 5
 
 # Live benchmarking (requires API key)
-claude-test benchmark --spec prompts/summarize.yaml --runs 5 --mode live
+codeprobe benchmark --spec prompts/summarize.yaml --runs 5 --mode live
 ```
 
 Benchmarking runs each test case multiple times and reports statistics on latency,
@@ -270,7 +270,7 @@ token usage, and assertion pass rates.
 
 ## CI/CD Integration
 
-claude-test works well in CI pipelines. Here is an example GitHub Actions workflow:
+codeprobe works well in CI pipelines. Here is an example GitHub Actions workflow:
 
 ```yaml
 name: Prompt Tests
@@ -279,7 +279,7 @@ on:
     paths:
       - 'prompts/**'
       - 'CLAUDE.md'
-      - 'claude-test.config.yaml'
+      - 'codeprobe.config.yaml'
 
 jobs:
   test:
@@ -291,20 +291,20 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install claude-test
-        run: npm install -g claude-test
+      - name: Install codeprobe
+        run: npm install -g codeprobe
 
       - name: Run prompt tests (mock)
-        run: claude-test test --json
+        run: codeprobe test --json
 
       - name: Run prompt tests (live)
         if: github.event_name == 'pull_request'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: claude-test test --mode live --json
+        run: codeprobe test --mode live --json
 
       - name: Check context budget
-        run: claude-test pack . --target 200k --json
+        run: codeprobe pack . --target 200k --json
 ```
 
 This workflow:

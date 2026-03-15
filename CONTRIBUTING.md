@@ -1,6 +1,6 @@
-# Contributing to claude-test
+# Contributing to codeprobe
 
-Thank you for your interest in contributing to claude-test. This document
+Thank you for your interest in contributing to codeprobe. This document
 covers the process for setting up a development environment, building the
 project, and submitting changes.
 
@@ -9,8 +9,8 @@ project, and submitting changes.
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/anthropics/claude-test.git
-cd claude-test
+git clone https://github.com/anthropics/codeprobe.git
+cd codeprobe
 ```
 
 2. **Install dependencies**
@@ -37,7 +37,7 @@ Or link it globally for development:
 
 ```bash
 npm link
-claude-test --help
+codeprobe --help
 ```
 
 ## Project Structure

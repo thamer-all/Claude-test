@@ -1,5 +1,5 @@
 /**
- * `claude-test agents [path]` — Scan for AI coding tool assets.
+ * `codeprobe agents [path]` — Scan for AI coding tool assets.
  *
  * Detects configuration and workflow files for Claude Code, Cursor,
  * Windsurf, GitHub Copilot, Aider, Continue.dev, Cline, OpenAI Codex,
@@ -68,10 +68,10 @@ const ASSET_PATTERNS: Array<{
     reason: 'Possible hook configuration',
   },
   {
-    namePattern: /claude[_-]?test\.config\.(ya?ml|json)$/i,
+    namePattern: /codeprobe\.config\.(ya?ml|json)$/i,
     type: 'context-file',
     confidence: 'high',
-    reason: 'claude-test configuration file',
+    reason: 'codeprobe configuration file',
   },
   {
     namePattern: /AGENTS?\.md$/i,
@@ -302,7 +302,7 @@ export function registerAgentsCommand(program: Command): void {
 
       if (assets.length === 0) {
         console.log(chalk.dim('\nNo AI coding tool assets found.'));
-        console.log(chalk.dim('Run `claude-test init` to create starter files.\n'));
+        console.log(chalk.dim('Run `codeprobe init` to create starter files.\n'));
         return;
       }
 
