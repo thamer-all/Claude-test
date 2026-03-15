@@ -1,0 +1,47 @@
+# claude-test configuration
+# DevTools for Claude — context engineering toolkit
+
+# Default model for prompt testing and benchmarks
+defaultModel: claude-sonnet-4-6
+
+# Default context window target: 200k or 1m
+defaultContextTarget: 1m
+
+# Paths to ignore during context analysis
+ignorePaths:
+  - node_modules
+  - .git
+  - dist
+  - build
+  - coverage
+  - .next
+  - .nuxt
+  - __pycache__
+  - .DS_Store
+  - .cache
+  - .turbo
+  - vendor
+  - .venv
+
+# Enable caching for prompt test runs
+caching: true
+
+# Watch mode settings
+watchDefaults:
+  debounceMs: 300
+  clearScreen: true
+
+# Context budget allocation (percentages of target window)
+contextBudgets:
+  systemPrompt: 10
+  coreFiles: 50
+  docs: 20
+  toolMeta: 10
+
+# Benchmark defaults
+benchmarkDefaults:
+  models:
+    - claude-sonnet-4-6
+    - claude-opus-4-6
+  runs: 3
+  warmup: false

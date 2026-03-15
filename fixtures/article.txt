@@ -1,0 +1,33 @@
+Context engineering is emerging as one of the most important disciplines in applied
+AI development. While prompt engineering focuses on crafting the right instructions
+for a language model, context engineering takes a broader view: it considers the
+entire information environment that surrounds a model invocation. This includes
+system prompts, user messages, retrieved documents, tool definitions, conversation
+history, and any structured metadata that shapes how the model interprets and
+responds to a request.
+
+The distinction matters because modern AI applications rarely operate on a single
+prompt in isolation. A production system might assemble context from dozens of
+sources: a CLAUDE.md file describing project conventions, relevant source code
+files pulled via semantic search, API documentation for available tools, user
+preferences stored in a profile, and the rolling history of a multi-turn
+conversation. Each of these components competes for space within a finite context
+window, and the way they are selected, ordered, and formatted has a direct impact
+on output quality.
+
+Practitioners of context engineering develop strategies for budgeting token usage
+across these components. A common approach allocates fixed percentages of the
+available window to different categories: system instructions might receive 10
+percent, core reference files 50 percent, documentation 20 percent, and tool
+metadata the remaining 10 percent. These budgets are not arbitrary. They reflect
+empirical observations about how models prioritize information based on its
+position and density within the context.
+
+Tooling is beginning to catch up with the discipline. Context analysis tools can
+now scan a project, estimate token counts for each file, identify which files are
+most likely to be relevant for a given task, and flag when the total context
+exceeds the target window size. Some tools go further, generating heatmaps that
+visualize token density across a codebase or simulating how a context window would
+be assembled for a specific query. As models with million-token context windows
+become standard, the ability to engineer context effectively will separate
+applications that merely use AI from those that use it well.

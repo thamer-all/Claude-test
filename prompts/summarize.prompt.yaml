@@ -1,0 +1,44 @@
+name: summarize
+description: Summarize text into 3 bullet points
+model: claude-sonnet-4-6
+
+system: |
+  You are a concise summarizer. Always respond with exactly 3 bullet points.
+  Each bullet point should start with "- " and capture a key insight.
+
+prompt: |
+  Summarize the following text in exactly 3 bullet points:
+
+  {{input}}
+
+tests:
+  - name: inline-short
+    input: |
+      Claude Code is an agentic coding tool that lives in your terminal.
+      It understands your codebase, can edit files, run commands, and
+      help you work faster with AI-powered development workflows.
+    expect:
+      contains:
+        - Claude Code
+      regex:
+        - "^- "
+
+  - name: fixture-article
+    inputFile: ../fixtures/article.txt
+    expect:
+      contains:
+        - Context
+      regex:
+        - "^- "
+
+  - name: bullet-count
+    input: |
+      TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.
+      It adds optional static types, classes, and modules to JavaScript.
+      TypeScript is designed for development of large applications.
+    expect:
+      regex:
+        - "^- "
+      notContains:
+        - "4."
+        - "5."

@@ -1,0 +1,45 @@
+# basic-test.prompt.yaml
+#
+# A minimal example showing how to write a prompt test with claude-test.
+# Run it with: claude-test test examples/basic-test.prompt.yaml
+
+name: basic-test
+description: Extract the programming language mentioned in the input text
+model: claude-sonnet-4-6
+
+system: |
+  You are a helpful assistant. When asked about a programming language,
+  respond with only the language name in lowercase. No punctuation, no
+  explanation, just the language name.
+
+prompt: |
+  What programming language is described below?
+
+  {{input}}
+
+tests:
+  - name: identifies-python
+    input: |
+      This language uses indentation for block scoping, has a "zen"
+      philosophy, and is popular for data science and machine learning.
+    expect:
+      contains:
+        - python
+
+  - name: identifies-rust
+    input: |
+      This systems programming language emphasizes memory safety without
+      garbage collection and uses a borrow checker to enforce ownership rules.
+    expect:
+      contains:
+        - rust
+
+  - name: identifies-typescript
+    input: |
+      This language is a typed superset of JavaScript developed by Microsoft.
+      It compiles down to plain JavaScript and adds static type checking.
+    expect:
+      contains:
+        - typescript
+      notContains:
+        - javascript

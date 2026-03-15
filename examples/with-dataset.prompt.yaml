@@ -1,0 +1,29 @@
+# with-dataset.prompt.yaml
+#
+# An example showing how to use a JSONL dataset for prompt testing.
+# Each line in the dataset file is a JSON object with "input" and "expected" fields.
+# Run it with: claude-test test examples/with-dataset.prompt.yaml
+
+name: entity-extraction
+description: Extract the primary subject from a sentence
+model: claude-sonnet-4-6
+
+system: |
+  You are an entity extraction assistant. Given a sentence, identify the
+  primary subject or tool being described. Respond with only the name,
+  exactly as it appears in the input. No explanation, no punctuation.
+
+prompt: |
+  Extract the primary subject from this sentence:
+
+  {{input}}
+
+# Load test cases from a JSONL dataset file.
+# Each line must have an "input" field. The "expected" field is used for assertions.
+dataset: ../datasets/sample.jsonl
+
+# Assertions applied to every row in the dataset.
+# The {{expected}} variable is populated from each row's "expected" field.
+expect:
+  contains:
+    - "{{expected}}"

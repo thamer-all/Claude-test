@@ -1,0 +1,5 @@
+{"input":"Claude Code helps developers write, test, and debug code faster using AI.","expected":"Claude"}
+{"input":"Context engineering is the practice of optimizing what information you send to an LLM to get the best results.","expected":"Context"}
+{"input":"MCP (Model Context Protocol) allows Claude to connect to external tools and data sources.","expected":"MCP"}
+{"input":"Prompt testing helps catch regressions when you modify your prompts or system instructions.","expected":"testing"}
+{"input":"The Anthropic API supports streaming, tool use, and vision capabilities for building AI applications.","expected":"Anthropic"}
