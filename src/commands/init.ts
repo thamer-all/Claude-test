@@ -1,10 +1,12 @@
 /**
  * `codeprobe init` — Create starter folders, example prompt files,
  * dataset examples, and configuration.
+ *
+ * Auto-detects AI tools in use and provides context-aware next steps.
  */
 
 import { Command } from 'commander';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, writeFile, access } from 'node:fs/promises';
 import { join } from 'node:path';
 import { resolvePath } from '../utils/paths.js';
 import { fileExists, isDirectory } from '../utils/fs.js';
@@ -124,6 +126,49 @@ interface InitItem {
   description: string;
 }
 
+interface DetectedTool {
+  name: string;
+  indicator: string;
+}
+
+async function pathExists(path: string): Promise<boolean> {
+  try {
+    await access(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Auto-detect AI tools in use by checking for known config files/directories.
+ */
+async function detectAITools(root: string): Promise<DetectedTool[]> {
+  const detected: DetectedTool[] = [];
+
+  const checks: Array<{ name: string; paths: string[] }> = [
+    { name: 'Claude Code', paths: ['CLAUDE.md', '.claude/settings.json'] },
+    { name: 'Cursor', paths: ['.cursorrules', '.cursor/rules'] },
+    { name: 'Windsurf', paths: ['.windsurfrules', '.windsurf/rules'] },
+    { name: 'GitHub Copilot', paths: ['.github/copilot-instructions.md', '.copilot'] },
+    { name: 'Aider', paths: ['.aider.conf.yml', '.aiderignore'] },
+    { name: 'Continue', paths: ['.continue/config.json', '.continuerules'] },
+    { name: 'Cline', paths: ['.clinerules', '.cline'] },
+    { name: 'Codex', paths: ['codex.md', 'CODEX.md', '.codex'] },
+  ];
+
+  for (const check of checks) {
+    for (const p of check.paths) {
+      if (await pathExists(join(root, p))) {
+        detected.push({ name: check.name, indicator: p });
+        break;
+      }
+    }
+  }
+
+  return detected;
+}
+
 export function registerInitCommand(program: Command): void {
   program
     .command('init')
@@ -132,6 +177,9 @@ export function registerInitCommand(program: Command): void {
     .action(async (options: { force?: boolean }) => {
       const chalk = (await import('chalk')).default;
       const root = process.cwd();
+
+      // Auto-detect AI tools
+      const detectedTools = await detectAITools(root);
 
       const items: InitItem[] = [
         {
@@ -182,6 +230,7 @@ export function registerInitCommand(program: Command): void {
 
       let created = 0;
       let skipped = 0;
+      const createdFiles: string[] = [];
 
       for (const item of items) {
         const fullPath = resolvePath(join(root, item.path));
@@ -208,6 +257,7 @@ export function registerInitCommand(program: Command): void {
           await mkdir(parentDir, { recursive: true });
           await writeFile(fullPath, item.content ?? '', 'utf-8');
           console.log(chalk.green(`  create  ${item.path}`));
+          createdFiles.push(item.path);
           created++;
         }
       }
@@ -216,10 +266,36 @@ export function registerInitCommand(program: Command): void {
       console.log(
         chalk.bold(`Initialized codeprobe project: ${created} created, ${skipped} skipped`),
       );
+
+      // Show detected AI tools
+      if (detectedTools.length > 0) {
+        console.log('');
+        console.log(chalk.bold('  Detected AI tools:'));
+        for (const tool of detectedTools) {
+          console.log(chalk.cyan(`    ${tool.name}`) + chalk.dim(` (${tool.indicator})`));
+        }
+
+        // Hint about Cursor rules generation if Cursor is detected but no .cursorrules
+        const hasCursor = detectedTools.some(t => t.name === 'Cursor');
+        const hasCursorRules = await pathExists(join(root, '.cursorrules'));
+        if (hasCursor && !hasCursorRules) {
+          console.log(chalk.dim('    Tip: generate Cursor rules with: codeprobe generate-rules --tool cursor'));
+        }
+      } else {
+        console.log('');
+        console.log(chalk.dim('  No AI tools detected. Generate configs with:'));
+        console.log(chalk.dim('    codeprobe generate-claudemd      (Claude Code)'));
+        console.log(chalk.dim('    codeprobe generate-rules         (Cursor, Windsurf, etc.)'));
+      }
+
+      // Context-aware "What's next?" section
       console.log('');
-      console.log(chalk.dim('Next steps:'));
-      console.log(chalk.dim('  1. Edit prompts/summarize.prompt.yaml with your prompt'));
-      console.log(chalk.dim('  2. Run: codeprobe test'));
-      console.log(chalk.dim('  3. Run: codeprobe context'));
+      console.log(chalk.bold('  What\'s next:'));
+      console.log(chalk.white('    1. Run a full scan:           ') + chalk.cyan('codeprobe scan'));
+      console.log(chalk.white('    2. See the dashboard:         ') + chalk.cyan('codeprobe'));
+      console.log(chalk.white('    3. Generate AI tool config:   ') + chalk.cyan('codeprobe generate-claudemd'));
+      console.log(chalk.white('    4. Test your prompts:         ') + chalk.cyan('codeprobe test'));
+      console.log(chalk.white('    5. Auto-generate tests:       ') + chalk.cyan('codeprobe autotest prompts/summarize.prompt.yaml'));
+      console.log('');
     });
 }

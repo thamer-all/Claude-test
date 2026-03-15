@@ -39,6 +39,7 @@ import { registerRecommendCommand } from './commands/recommend.js';
 import { registerAbCommand } from './commands/ab.js';
 import { registerScoreCommand } from './commands/score.js';
 import { registerFlakyCommand } from './commands/flaky.js';
+import { registerScanCommand } from './commands/scan.js';
 import { handleError } from './utils/errors.js';
 
 const program = new Command();
@@ -49,13 +50,15 @@ program
   .description('DevTools for AI Coding — context engineering toolkit for Claude, Cursor, Copilot, and more')
   .addHelpText('after', `
 Examples:
-  $ codeprobe init                    Create starter project
-  $ codeprobe test                    Run all prompt tests
-  $ codeprobe context .               Analyze repo context usage
-  $ codeprobe pack . --target 200k    Build context pack plan
-  $ codeprobe simulate . --model gpt-4o   Simulate against model context window
-  $ codeprobe workflow run ci         Run a named workflow
-  $ codeprobe doctor                  Check environment setup
+  $ codeprobe                          Dashboard (default)
+  $ codeprobe scan                     Full project analysis
+  $ codeprobe test                     Run prompt tests
+  $ codeprobe context .                Analyze token usage
+  $ codeprobe cost .                   Estimate API costs
+  $ codeprobe generate-rules           Generate AI tool configs
+
+Quick start:
+  $ codeprobe init && codeprobe scan
 `);
 
 registerInitCommand(program);
@@ -92,5 +95,11 @@ registerRecommendCommand(program);
 registerAbCommand(program);
 registerScoreCommand(program);
 registerFlakyCommand(program);
+registerScanCommand(program);
+
+// Smart default: if no command given, run dashboard on current directory
+if (process.argv.length === 2) {
+  process.argv.push('dashboard', '.');
+}
 
 program.parseAsync(process.argv).catch(handleError);
