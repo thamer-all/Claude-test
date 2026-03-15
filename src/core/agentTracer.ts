@@ -148,6 +148,192 @@ const ASSET_RULES: ReadonlyArray<AssetRule> = [
     confidence: 'medium',
     reason: 'YAML file in prompts/ directory -- likely a prompt specification.',
   },
+
+  // ── Cursor ──────────────────────────────────────────────
+  {
+    match: (_rel, name) => name === '.cursorrules',
+    type: 'cursor-config',
+    confidence: 'high',
+    reason: 'Cursor rules configuration file.',
+  },
+  {
+    match: (rel) =>
+      rel.startsWith('.cursor/rules/') || rel.startsWith('.cursor\\rules\\'),
+    type: 'cursor-config',
+    confidence: 'high',
+    reason: 'File inside .cursor/rules/ directory (Cursor rule definition).',
+  },
+  {
+    match: (rel) =>
+      rel === '.cursor/mcp.json' || rel === '.cursor\\mcp.json',
+    type: 'mcp-config',
+    confidence: 'high',
+    reason: 'MCP configuration file for Cursor.',
+  },
+
+  // ── Windsurf ────────────────────────────────────────────
+  {
+    match: (_rel, name) => name === '.windsurfrules',
+    type: 'windsurf-config',
+    confidence: 'high',
+    reason: 'Windsurf rules configuration file.',
+  },
+  {
+    match: (rel) =>
+      rel.startsWith('.windsurf/rules/') || rel.startsWith('.windsurf\\rules\\'),
+    type: 'windsurf-config',
+    confidence: 'high',
+    reason: 'File inside .windsurf/rules/ directory (Windsurf rule definition).',
+  },
+
+  // ── GitHub Copilot ──────────────────────────────────────
+  {
+    match: (rel) =>
+      rel === '.github/copilot-instructions.md' ||
+      rel === '.github\\copilot-instructions.md',
+    type: 'copilot-config',
+    confidence: 'high',
+    reason: 'GitHub Copilot custom instructions file.',
+  },
+  {
+    match: (rel) =>
+      rel.startsWith('.copilot/') || rel.startsWith('.copilot\\'),
+    type: 'copilot-config',
+    confidence: 'medium',
+    reason: 'File inside .copilot/ directory (GitHub Copilot configuration).',
+  },
+
+  // ── Aider ───────────────────────────────────────────────
+  {
+    match: (_rel, name) => name === '.aider.conf.yml',
+    type: 'aider-config',
+    confidence: 'high',
+    reason: 'Aider configuration file.',
+  },
+  {
+    match: (_rel, name) => name === '.aiderignore',
+    type: 'aider-config',
+    confidence: 'high',
+    reason: 'Aider ignore file.',
+  },
+  {
+    match: (_rel, name) => name === '.aider.model.settings.yml',
+    type: 'aider-config',
+    confidence: 'high',
+    reason: 'Aider model settings file.',
+  },
+
+  // ── Continue.dev ────────────────────────────────────────
+  {
+    match: (rel) =>
+      rel === '.continue/config.json' || rel === '.continue\\config.json',
+    type: 'continue-config',
+    confidence: 'high',
+    reason: 'Continue.dev configuration file.',
+  },
+  {
+    match: (_rel, name) => name === '.continuerules',
+    type: 'continue-config',
+    confidence: 'high',
+    reason: 'Continue.dev rules file.',
+  },
+  {
+    match: (rel) =>
+      rel.startsWith('.continue/') || rel.startsWith('.continue\\'),
+    type: 'continue-config',
+    confidence: 'medium',
+    reason: 'File inside .continue/ directory (Continue.dev configuration).',
+  },
+
+  // ── Cline ───────────────────────────────────────────────
+  {
+    match: (_rel, name) => name === '.clinerules',
+    type: 'cline-config',
+    confidence: 'high',
+    reason: 'Cline rules configuration file.',
+  },
+  {
+    match: (rel) =>
+      rel.startsWith('.cline/') || rel.startsWith('.cline\\'),
+    type: 'cline-config',
+    confidence: 'medium',
+    reason: 'File inside .cline/ directory (Cline configuration).',
+  },
+
+  // ── OpenAI Codex CLI ────────────────────────────────────
+  {
+    match: (_rel, name) => name === 'codex.md' || name === 'CODEX.md',
+    type: 'codex-config',
+    confidence: 'high',
+    reason: 'OpenAI Codex CLI instruction file.',
+  },
+  {
+    match: (rel) =>
+      rel.startsWith('.codex/') || rel.startsWith('.codex\\'),
+    type: 'codex-config',
+    confidence: 'medium',
+    reason: 'File inside .codex/ directory (OpenAI Codex configuration).',
+  },
+
+  // ── General AI context files ────────────────────────────
+  {
+    match: (_rel, name) => name === 'AGENTS.md',
+    type: 'context-file',
+    confidence: 'medium',
+    reason: 'AI agent instructions file.',
+  },
+  {
+    match: (_rel, name) => name === 'CONTEXT.md',
+    type: 'context-file',
+    confidence: 'medium',
+    reason: 'AI context documentation file.',
+  },
+  {
+    match: (_rel, name) => name === 'AI.md',
+    type: 'context-file',
+    confidence: 'medium',
+    reason: 'AI instructions file.',
+  },
+  {
+    match: (rel) =>
+      rel.startsWith('.ai/') || rel.startsWith('.ai\\'),
+    type: 'context-file',
+    confidence: 'medium',
+    reason: 'File inside .ai/ directory (AI configuration).',
+  },
+
+  // ── Agentic workflow files ──────────────────────────────
+  {
+    match: (rel) =>
+      rel === 'tasks/todo.md' || rel === 'tasks\\todo.md',
+    type: 'agentic-workflow',
+    confidence: 'high',
+    reason: 'Agentic workflow task list.',
+  },
+  {
+    match: (rel) =>
+      rel === 'tasks/lessons.md' || rel === 'tasks\\lessons.md',
+    type: 'agentic-workflow',
+    confidence: 'high',
+    reason: 'Agentic workflow lessons learned.',
+  },
+  {
+    match: (_rel, name) => name === 'PLAN.md',
+    type: 'agentic-workflow',
+    confidence: 'medium',
+    reason: 'Agentic workflow plan file.',
+  },
+  {
+    match: (rel, _name, ext) => {
+      const parts = rel.split(/[/\\]/);
+      return parts.length >= 2 &&
+        parts[0] === 'plans' &&
+        ext === '.md';
+    },
+    type: 'agentic-workflow',
+    confidence: 'medium',
+    reason: 'Markdown file in plans/ directory -- likely an agentic workflow plan.',
+  },
 ];
 
 /**

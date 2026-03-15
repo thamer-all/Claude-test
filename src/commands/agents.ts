@@ -1,8 +1,9 @@
 /**
- * `claude-test agents [path]` — Scan for Claude-related assets.
+ * `claude-test agents [path]` — Scan for AI coding tool assets.
  *
- * Detects CLAUDE.md, .claude/ directories, skill files, prompt specs,
- * MCP configs, and other Claude Code artifacts.
+ * Detects configuration and workflow files for Claude Code, Cursor,
+ * Windsurf, GitHub Copilot, Aider, Continue.dev, Cline, OpenAI Codex,
+ * and other AI coding tools.
  */
 
 import { Command } from 'commander';
@@ -84,6 +85,153 @@ const ASSET_PATTERNS: Array<{
     confidence: 'medium',
     reason: 'Context documentation file',
   },
+  // ── Cursor ──
+  {
+    namePattern: /^\.cursorrules$/,
+    type: 'cursor-config',
+    confidence: 'high',
+    reason: 'Cursor rules configuration file',
+  },
+  {
+    namePattern: /^\.cursor[/\\]rules[/\\]/,
+    type: 'cursor-config',
+    confidence: 'high',
+    reason: 'Cursor rule definition',
+  },
+  {
+    namePattern: /^\.cursor[/\\]mcp\.json$/,
+    type: 'mcp-config',
+    confidence: 'high',
+    reason: 'MCP configuration file for Cursor',
+  },
+  // ── Windsurf ──
+  {
+    namePattern: /^\.windsurfrules$/,
+    type: 'windsurf-config',
+    confidence: 'high',
+    reason: 'Windsurf rules configuration file',
+  },
+  {
+    namePattern: /^\.windsurf[/\\]rules[/\\]/,
+    type: 'windsurf-config',
+    confidence: 'high',
+    reason: 'Windsurf rule definition',
+  },
+  // ── GitHub Copilot ──
+  {
+    namePattern: /^\.github[/\\]copilot-instructions\.md$/,
+    type: 'copilot-config',
+    confidence: 'high',
+    reason: 'GitHub Copilot custom instructions',
+  },
+  {
+    namePattern: /^\.copilot[/\\]/,
+    type: 'copilot-config',
+    confidence: 'medium',
+    reason: 'GitHub Copilot configuration',
+  },
+  // ── Aider ──
+  {
+    namePattern: /^\.aider\.conf\.yml$/,
+    type: 'aider-config',
+    confidence: 'high',
+    reason: 'Aider configuration file',
+  },
+  {
+    namePattern: /^\.aiderignore$/,
+    type: 'aider-config',
+    confidence: 'high',
+    reason: 'Aider ignore file',
+  },
+  {
+    namePattern: /^\.aider\.model\.settings\.yml$/,
+    type: 'aider-config',
+    confidence: 'high',
+    reason: 'Aider model settings file',
+  },
+  // ── Continue.dev ──
+  {
+    namePattern: /^\.continue[/\\]config\.json$/,
+    type: 'continue-config',
+    confidence: 'high',
+    reason: 'Continue.dev configuration file',
+  },
+  {
+    namePattern: /^\.continuerules$/,
+    type: 'continue-config',
+    confidence: 'high',
+    reason: 'Continue.dev rules file',
+  },
+  {
+    namePattern: /^\.continue[/\\]/,
+    type: 'continue-config',
+    confidence: 'medium',
+    reason: 'Continue.dev configuration',
+  },
+  // ── Cline ──
+  {
+    namePattern: /^\.clinerules$/,
+    type: 'cline-config',
+    confidence: 'high',
+    reason: 'Cline rules configuration file',
+  },
+  {
+    namePattern: /^\.cline[/\\]/,
+    type: 'cline-config',
+    confidence: 'medium',
+    reason: 'Cline configuration',
+  },
+  // ── OpenAI Codex CLI ──
+  {
+    namePattern: /^[Cc][Oo][Dd][Ee][Xx]\.md$/,
+    type: 'codex-config',
+    confidence: 'high',
+    reason: 'OpenAI Codex CLI instruction file',
+  },
+  {
+    namePattern: /^\.codex[/\\]/,
+    type: 'codex-config',
+    confidence: 'medium',
+    reason: 'OpenAI Codex configuration',
+  },
+  // ── General AI ──
+  {
+    namePattern: /^AI\.md$/,
+    type: 'context-file',
+    confidence: 'medium',
+    reason: 'AI instructions file',
+  },
+  {
+    namePattern: /^\.ai[/\\]/,
+    type: 'context-file',
+    confidence: 'medium',
+    reason: 'AI configuration directory',
+  },
+  // ── Agentic workflow ──
+  {
+    namePattern: /^tasks[/\\]todo\.md$/i,
+    type: 'agentic-workflow',
+    confidence: 'high',
+    reason: 'Agentic workflow task list',
+  },
+  {
+    namePattern: /^tasks[/\\]lessons\.md$/i,
+    type: 'agentic-workflow',
+    confidence: 'high',
+    reason: 'Agentic workflow lessons learned',
+  },
+  {
+    namePattern: /^PLAN\.md$/,
+    type: 'agentic-workflow',
+    confidence: 'medium',
+    reason: 'Agentic workflow plan file',
+  },
+  {
+    namePattern: /^plans[/\\].*\.md$/i,
+    type: 'agentic-workflow',
+    confidence: 'medium',
+    reason: 'Agentic workflow plan',
+  },
 ];
 
 /**
@@ -132,7 +280,7 @@ async function agentTracer(rootPath: string): Promise<ClaudeAsset[]> {
 export function registerAgentsCommand(program: Command): void {
   program
     .command('agents [path]')
-    .description('Scan for Claude Code assets — CLAUDE.md, skills, agents, MCP configs')
+    .description('Scan for AI coding tool assets — Claude, Cursor, Windsurf, Copilot, and more')
     .option('--json', 'Output findings as JSON')
     .action(async (
       pathArg: string | undefined,
@@ -153,12 +301,12 @@ export function registerAgentsCommand(program: Command): void {
       }
 
       if (assets.length === 0) {
-        console.log(chalk.dim('\nNo Claude assets found.'));
+        console.log(chalk.dim('\nNo AI coding tool assets found.'));
         console.log(chalk.dim('Run `claude-test init` to create starter files.\n'));
         return;
       }
 
-      console.log(chalk.bold(`\nClaude Assets (${assets.length} found)`));
+      console.log(chalk.bold(`\nAI Tool Assets (${assets.length} found)`));
       console.log('');
 
       // Group by type
@@ -170,13 +318,21 @@ export function registerAgentsCommand(program: Command): void {
       }
 
       const typeLabels: Record<ClaudeAssetType, string> = {
-        'claude-config': 'Configuration',
+        'claude-config': 'Claude Code',
+        'cursor-config': 'Cursor',
+        'windsurf-config': 'Windsurf',
+        'copilot-config': 'GitHub Copilot',
+        'aider-config': 'Aider',
+        'continue-config': 'Continue.dev',
+        'cline-config': 'Cline',
+        'codex-config': 'OpenAI Codex',
         'agent': 'Agents',
         'skill': 'Skills',
         'hook': 'Hooks',
         'mcp-config': 'MCP Configs',
         'prompt-spec': 'Prompt Specs',
         'context-file': 'Context Files',
+        'agentic-workflow': 'Agentic Workflow',
         'other': 'Other',
       };
 

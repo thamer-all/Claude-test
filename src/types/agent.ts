@@ -10,15 +10,26 @@ export interface ClaudeAsset {
   metadata?: Record<string, unknown>;
 }
 
-export type ClaudeAssetType =
+export type AIToolType =
   | 'claude-config'
+  | 'cursor-config'
+  | 'windsurf-config'
+  | 'copilot-config'
+  | 'aider-config'
+  | 'continue-config'
+  | 'cline-config'
+  | 'codex-config'
   | 'agent'
   | 'skill'
   | 'hook'
   | 'mcp-config'
   | 'prompt-spec'
   | 'context-file'
+  | 'agentic-workflow'
   | 'other';
+
+// Keep ClaudeAssetType as alias for backward compatibility
+export type ClaudeAssetType = AIToolType;
 
 export interface HookInfo {
   path: string;
