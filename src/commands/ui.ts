@@ -224,11 +224,14 @@ export function registerUiCommand(program: Command): void {
         res.writeHead(200, {
           'Content-Type': 'text/html; charset=utf-8',
           'Cache-Control': 'no-cache',
+          'X-Frame-Options': 'DENY',
+          'X-Content-Type-Options': 'nosniff',
+          'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'; script-src 'none'",
         });
         res.end(html);
       });
 
-      server.listen(port, () => {
+      server.listen(port, '127.0.0.1', () => {
         const url = `http://localhost:${port}`;
         console.log(
           `  ${chalk.green('Ready')}  Dashboard running at ${chalk.cyan(url)}\n`,

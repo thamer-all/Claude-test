@@ -5,6 +5,7 @@
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { resolve, dirname } from 'node:path';
+import { runInNewContext } from 'node:vm';
 import yaml from 'js-yaml';
 import { z } from 'zod';
 import _Ajv from 'ajv';
@@ -98,6 +99,10 @@ export async function parsePromptSpec(filePath: string): Promise<PromptSpec> {
     for (const test of parsed.tests) {
       if (test.inputFile && !test.input) {
         const inputPath = resolve(specDir, test.inputFile);
+        // Prevent path traversal
+        if (!inputPath.startsWith(specDir) && !inputPath.startsWith(process.cwd())) {
+          throw new Error(`Path traversal detected in inputFile: "${test.inputFile}"`);
+        }
         const inputContent = await readTextFile(inputPath);
         if (inputContent !== null) {
           test.input = inputContent;
@@ -324,9 +329,11 @@ export async function evaluateAssertions(
   // custom function check
   if (expect.custom) {
     try {
-      const fn = new Function('output', `return (${expect.custom})(output);`);
-      const result = fn(output);
-      const passed = Boolean(result);
+      // Run in a sandboxed context with no access to require, process, fs, etc.
+      const sandbox = { output, result: false };
+      const code = `result = (${expect.custom})(output);`;
+      runInNewContext(code, sandbox, { timeout: 1000 }); // 1 second timeout
+      const passed = Boolean(sandbox.result);
       results.push({
         type: 'custom',
         expected: 'custom function returns truthy',

@@ -7,6 +7,10 @@
 
 import type { ProviderClient, ProviderRequest, ProviderResponse } from './base.js';
 
+function sanitizeError(text: string): string {
+  return text.replace(/(?:key|token|bearer|authorization)[=:\s]*[a-zA-Z0-9_\-\.]{10,}/gi, '[REDACTED]');
+}
+
 export interface OpenAIProviderOptions {
   baseURL?: string;
   apiKeyEnv?: string;
@@ -50,8 +54,8 @@ export class OpenAIProvider implements ProviderClient {
     });
 
     if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`API error (${response.status}): ${error}`);
+      const errorText = sanitizeError(await response.text());
+      throw new Error(`API error (${response.status}): ${errorText.slice(0, 500)}`);
     }
 
     const data = await response.json() as Record<string, unknown>;

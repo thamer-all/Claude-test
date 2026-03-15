@@ -5,6 +5,10 @@
 
 import type { ProviderClient, ProviderRequest, ProviderResponse } from './base.js';
 
+function sanitizeError(text: string): string {
+  return text.replace(/(?:key|token|bearer|authorization)[=:\s]*[a-zA-Z0-9_\-\.]{10,}/gi, '[REDACTED]');
+}
+
 export class GoogleProvider implements ProviderClient {
   async isAvailable(): Promise<boolean> {
     return !!process.env.GOOGLE_API_KEY;
@@ -30,16 +34,19 @@ export class GoogleProvider implements ProviderClient {
       body.systemInstruction = { parts: [{ text: request.system }] };
     }
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${request.model}:generateContent?key=${apiKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${request.model}:generateContent`;
     const response = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey,
+      },
       body: JSON.stringify(body),
     });
 
     if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`Gemini API error (${response.status}): ${error}`);
+      const errorText = sanitizeError(await response.text());
+      throw new Error(`Gemini API error (${response.status}): ${errorText.slice(0, 500)}`);
     }
 
     const data = await response.json() as Record<string, unknown>;

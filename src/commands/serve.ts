@@ -9,6 +9,7 @@
 
 import { Command } from 'commander';
 import { createInterface } from 'node:readline';
+import { resolve } from 'node:path';
 import { analyzeContext } from '../core/contextAnalyzer.js';
 import { scanForClaudeAssets } from '../core/agentTracer.js';
 import { estimateTokens } from '../tokenizers/claudeTokenizer.js';
@@ -178,6 +179,17 @@ async function handleRequest(req: JsonRpcRequest): Promise<JsonRpcResponse> {
     const toolName = params.name;
     const args = params.arguments ?? {};
     const path = (args.path as string) ?? process.cwd();
+
+    // Validate path — restrict to current working directory
+    const cwd = process.cwd();
+    const resolvedPath = resolve(path);
+    if (!resolvedPath.startsWith(cwd)) {
+      return {
+        jsonrpc: '2.0',
+        id: req.id,
+        error: { code: -32602, message: 'Path must be within current working directory' },
+      };
+    }
 
     try {
       let result: unknown;
