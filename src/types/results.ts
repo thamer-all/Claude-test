@@ -28,3 +28,14 @@ export interface BenchmarkRun {
   latency: number;
   output: string;
 }
+
+export interface ScoredTestResult {
+  testName: string;
+  promptName: string;
+  passed: boolean;
+  score: number;           // 0-100
+  grade: string;           // A-F
+  criteria: Array<{ name: string; score: number; weight: number }>;
+  output: string;
+  duration: number;
+}
